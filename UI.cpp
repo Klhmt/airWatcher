@@ -48,18 +48,32 @@ void UI::application()
     cout << "-------------------------------------------------" << endl;
     cout << "Bienvenue dans l'application AirWatcher" << endl;
     cout << "1. Methode1" << endl;
-    cout << "2. Quitter l'application" << endl;
+    cout << "2. Methode2" << endl;
+    cout << "3. Methode3" << endl;
+    cout << "4. Quitter l'application" << endl;
     cout << "Veuillez entrer votre choix : ";
     cin >> choix;
     switch (choix)
     {
         case 1:
             cout << "Appel Methode 1" << endl;
-            // Appeler la méthode pour lancer l'application
+            // Appeler la méthode 1
             break;
+
         case 2:
+            cout << "Appel Methode 2" << endl;
+            // Appeler la méthode 2
+            break;
+
+        case 3:
+            cout << "Appel Methode 3" << endl;
+            // Appeler la méthode 3
+            break;
+
+        case 4:
             cout << "Merci d'avoir utilise AirWatcher, au revoir !!!" << endl;
             break;
+
         default:
             cout << "Choix invalide, veuillez reessayer." << endl;
             application();

@@ -1,28 +1,27 @@
 /*************************************************************************
-                           Provider  -  description
+                           AirCleaner  -  description
                              -------------------
     début                : $DATE$
     copyright            : (C) $YEAR$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <Provider> (fichier Provider.h) ----------------
-#if ! defined ( PROVIDER_H )
-#define PROVIDER_H
+//---------- Interface de la classe <AirCleaner> (fichier AirCleaner.h) ----------------
+#if ! defined ( AIRCLEANER_H )
+#define AIRCLEANER_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
 using namespace std;
 //------------------------------------------------------------- Constantes
 //------------------------------------------------------------------ Types
-
 //------------------------------------------------------------------------
-// Rôle de la classe <Provider>
+// Rôle de la classe <AirCleaner>
 //
 //
 //------------------------------------------------------------------------
 
-class Provider 
+class AirCleaner 
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -36,7 +35,7 @@ public:
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-    Provider & operator = ( const Provider & unProvider );
+    AirCleaner & operator = ( const AirCleaner & unAirCleaner );
     // Mode d'emploi :
     //
     // Contrat :
@@ -44,22 +43,22 @@ public:
 
 
 //-------------------------------------------- Constructeurs - destructeur
-    Provider ( const string name);
+    AirCleaner ( const string name);
     //Constructeur normal
     
-    Provider ( const Provider & unProvider );
+    AirCleaner ( const AirCleaner & unAirCleaner );
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
     //
 
-    Provider (  );
+    AirCleaner (  );
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    virtual ~Provider ( );
+    virtual ~AirCleaner ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -71,10 +70,12 @@ protected:
 //----------------------------------------------------- Méthodes protégées
     
 //----------------------------------------------------- Attributs protégés
-    string providerName;
+    string cleanerId;
+    float latitude;
+    float longtitud;
 };
 
-//-------------------------------- Autres définitions dépendantes de <Provider>
+//-------------------------------- Autres définitions dépendantes de <AirCleaner>
 
-#endif // PROVIDER_H
+#endif // AIRCLEANER_H
 

@@ -1,12 +1,12 @@
 /*************************************************************************
-                           Provider  -  description
+                           AirCleaner  -  description
                              -------------------
     début                : $DATE$
     copyright            : (C) $YEAR$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Réalisation de la classe <Provider> (fichier Provider.cpp) ------------
+//---------- Réalisation de la classe <AirCleaner> (fichier AirCleaner.cpp) ------------
 
 //---------------------------------------------------------------- INCLUDE
 
@@ -15,12 +15,12 @@
 using namespace std;
 
 //------------------------------------------------------ Include personnel
-#include "Provider.h"
+#include "AirCleaner.h"
 
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
 //----------------------------------------------------- Méthodes publiques
-// type Provider::Méthode ( liste des paramètres )
+// type AirCleaner::Méthode ( liste des paramètres )
 // Algorithme :
 //
 //{
@@ -28,7 +28,7 @@ using namespace std;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-Provider & Provider::operator = ( const Provider & unProvider )
+AirCleaner & AirCleaner::operator = ( const AirCleaner & unAirCleaner )
 // Algorithme :
 //
 {
@@ -36,40 +36,40 @@ Provider & Provider::operator = ( const Provider & unProvider )
 
 
 //-------------------------------------------- Constructeurs - destructeur
-Provider::Provider( const string name)
+AirCleaner::AirCleaner( const string name)
 {
     providerName = name;
 }
 
 
-Provider::Provider ( const Provider & unProvider )
+AirCleaner::AirCleaner ( const AirCleaner & unAirCleaner )
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de copie de <Provider>" << endl;
+    cout << "Appel au constructeur de copie de <AirCleaner>" << endl;
 #endif
-} //----- Fin de Provider (constructeur de copie)
+} //----- Fin de AirCleaner (constructeur de copie)
 
 
-Provider::Provider ( )
+AirCleaner::AirCleaner ( )
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de <Provider>" << endl;
+    cout << "Appel au constructeur de <AirCleaner>" << endl;
 #endif
-} //----- Fin de Provider
+} //----- Fin de AirCleaner
 
 
-Provider::~Provider ( )
+AirCleaner::~AirCleaner ( )
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au destructeur de <Provider>" << endl;
+    cout << "Appel au destructeur de <AirCleaner>" << endl;
 #endif
-} //----- Fin de ~Provider
+} //----- Fin de ~AirCleaner
 
 
 //------------------------------------------------------------------ PRIVE

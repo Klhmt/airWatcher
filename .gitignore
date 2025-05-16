@@ -1,0 +1,5 @@
+# Ignorer tous les fichiers objets
+*.o
+
+# Ignorer l'exécutable
+prog

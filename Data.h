@@ -15,6 +15,7 @@
 #include "Sensor.h"
 #include "Provider.h"
 #include "PrivateOwner.h"
+#include "AirCleaner.h"
 #include <vector>
 //#include "AirCleaner.h"
 
@@ -35,7 +36,10 @@ class Data
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    void loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath);
+    bool loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath);
+    bool loadProviderAndAirWatcher(const string& providerFilePath, const string& cleanerFilePath);
+
+    vector<Sensor> getSensors();
     
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -65,6 +69,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
+    vector<AirCleaner> airCleaners;
     vector<Sensor> sensors;
     vector<PrivateOwner> privateOwners;
     string baseFolderPath; // chemin vers le dossier

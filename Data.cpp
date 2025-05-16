@@ -33,7 +33,7 @@ using namespace std;
 
 
 
-void Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath)
+bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath)
 {
     unordered_map<string, PrivateOwner*> mapUser;        // map de nom vers pointeur
     unordered_map<string, PrivateOwner*> sensorToOwner;  // map de capteur vers propriétaire
@@ -45,7 +45,7 @@ void Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
     if (!userFile)
     {
         cerr << "Erreur : impossible d'ouvrir " << userPath << endl;
-        return;
+        return false;
     }
 
     while (getline(userFile, line))
@@ -74,7 +74,7 @@ void Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
     if (!sensorFile)
     {
         cerr << "Erreur : impossible d'ouvrir " << sensorPath << endl;
-        return;
+        return false;
     }
 
     while (getline(sensorFile, line))
@@ -98,6 +98,91 @@ void Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
     }
 
     sensorFile.close();
+    return true;
+}
+
+bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const string& cleanerFilePath)
+{
+    unordered_map<string, string> cleanerToProvider;
+    unordered_map<string, Provider*> providers;
+
+    ifstream providerFile(providerFilePath);
+    ifstream cleanerFile(cleanerFilePath);
+
+    if (!providerFile.is_open() || !cleanerFile.is_open())
+    {
+        cerr << "Erreur d'ouverture des fichiers." << endl;
+        return false;
+    }
+
+    // Lire les associations Provider <-> Cleaner
+    string line;
+    while (getline(providerFile, line))
+    {
+        istringstream iss(line);
+        string providerID, cleanerID;
+        if (!(iss >> providerID >> cleanerID)) continue;
+        cleanerToProvider[cleanerID] = providerID;
+    }
+
+    // Lire les informations de chaque cleaner
+    while (getline(cleanerFile, line))
+    {
+        istringstream iss(line);
+        string cleanerID, startDateStr, endDateStr;
+        float lat, lon;
+        int sh, sm, ss, eh, em, es;
+
+        if (!(iss >> cleanerID >> lat >> lon >> startDateStr >> sh >> sm >> ss >> endDateStr >> eh >> em >> es))
+        {
+            cerr << "Erreur de parsing ligne : " << line << endl;
+            continue;
+        }
+
+        // Conversion de la date de début
+        int sy, smon, sd;
+        sscanf(startDateStr.c_str(), "%d-%d-%d", &sy, &smon, &sd);
+        Date startDate(sy, smon, sd, sh, sm, ss);
+
+        // Conversion de la date de fin
+        int ey, emon, ed;
+        sscanf(endDateStr.c_str(), "%d-%d-%d", &ey, &emon, &ed);
+        Date endDate(ey, emon, ed, eh, em, es);
+
+        // Chercher ou créer le Provider
+        Provider* provider = nullptr;
+        auto it = cleanerToProvider.find(cleanerID);
+        if (it != cleanerToProvider.end())
+        {
+            string providerID = it->second;
+            if (providers.find(providerID) == providers.end())
+            {
+                provider = new Provider(providerID);
+                providers[providerID] = provider;
+                // Optionnel : ajouter à ta collection interne
+            }
+            else
+            {
+                provider = providers[providerID];
+            }
+        }
+
+        // Créer l'AirCleaner
+        AirCleaner cleaner = AirCleaner(cleanerID, lon, lat, startDate, endDate, provider);
+
+        // Optionnel : ajouter le cleaner à ta collection interne
+        airCleaners.push_back(cleaner);
+    }
+
+    providerFile.close();
+    cleanerFile.close();
+    return true;
+}
+
+
+vector<Sensor> getSensors()
+{
+    return sensors;
 }
 
 

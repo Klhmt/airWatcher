@@ -168,10 +168,11 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
         }
 
         // Créer l'AirCleaner
-        AirCleaner cleaner = AirCleaner(cleanerID, lon, lat, startDate, endDate, provider);
+        AirCleaner* cleaner = new AirCleaner(cleanerID, lon, lat, startDate, endDate, provider);
 
         // Optionnel : ajouter le cleaner à ta collection interne
-        airCleaners.push_back(cleaner);
+        airCleaners.push_back(*cleaner);
+        
     }
 
     providerFile.close();
@@ -180,7 +181,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
 }
 
 
-vector<Sensor> getSensors()
+vector<Sensor> Data::getSensors()
 {
     return sensors;
 }

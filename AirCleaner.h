@@ -12,6 +12,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include "Provider.h"
+
 #include <string>
 using namespace std;
 //------------------------------------------------------------- Constantes

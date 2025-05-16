@@ -1,28 +1,33 @@
 /*************************************************************************
-                           Provider  -  description
+                           Service  -  description
                              -------------------
     début                : $DATE$
     copyright            : (C) $YEAR$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <Provider> (fichier Provider.h) ----------------
-#if ! defined ( PROVIDER_H )
-#define PROVIDER_H
+//---------- Interface de la classe <Service> (fichier Service.h) ----------------
+#if ! defined ( SERVICE_H )
+#define SERVICE_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include "Mesurement.h"
+#include "Sensor.h"
+
 #include <string>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 //------------------------------------------------------------- Constantes
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <Provider>
+// Rôle de la classe <Service>
 //
 //
 //------------------------------------------------------------------------
 
-class Provider 
+class Service 
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -33,10 +38,21 @@ public:
     //
     // Contrat :
     //
+    int determinerFiabiliteCapteur(string sensorId);
+
+    int calculerQualiterAir(float lat, float lon, float radius, Date start)
+
+    vector<Mesurement> observerImpactAir();
+
+    unordered_map<Sensor,float> indentifierCapteursSimilaires(string sensorId);
+
+    bool bannirCapteur(string sensorId);
+
+    int consulterRecompense(string userName);
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-    Provider & operator = ( const Provider & unProvider );
+    Service & operator = ( const Service & unService );
     // Mode d'emploi :
     //
     // Contrat :
@@ -44,22 +60,20 @@ public:
 
 
 //-------------------------------------------- Constructeurs - destructeur
-    Provider ( const string name);
-    //Constructeur normal
     
-    Provider ( const Provider & unProvider );
+    Service ( const Service & unService );
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
     //
 
-    Provider (  );
+    Service (  );
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    virtual ~Provider ( );
+    virtual ~Service ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -71,10 +85,10 @@ protected:
 //----------------------------------------------------- Méthodes protégées
     
 //----------------------------------------------------- Attributs protégés
-    string providerName;
+
 };
 
-//-------------------------------- Autres définitions dépendantes de <Provider>
+//-------------------------------- Autres définitions dépendantes de <Service>
 
-#endif // PROVIDER_H
+#endif // SERVICE_H
 

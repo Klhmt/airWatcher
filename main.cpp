@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    // Ici se trouvera notre UI
+    // Ici se trouvera l'appel à la classe UI
     cout << "Hello, World!" << endl;   
      
 }

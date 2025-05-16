@@ -1,29 +1,67 @@
+/*************************************************************************
+                           Sensor -  description
+                             -------------------
+    début                : $DATE$
+    copyright            : (C) $YEAR$ par $AUTHOR$
+    e-mail               : $EMAIL$
+*************************************************************************/
+
+//---------- Réalisation de la classe <Sensor> (fichier Sensor.cpp) ------------
+//---------------------------------------------------------------- INCLUDE
+//-------------------------------------------------------- Include système
+
+//------------------------------------------------------ Include personnel
 #include "Sensor.h"
 
-// Constructeur par défaut
-Sensor::Sensor()
-{
- 
-}
+//------------------------------------------------------------- Constantes
+//----------------------------------------------------------------- PUBLIC
 
-// Constructeur avec paramètres
-Sensor::Sensor(string id, float lat, float lon, bool defectueux, PrivateOwner* prop)
+//-------------------------------------------- Constructeur par défaut
+Sensor::Sensor()
+// Algorithme :
+//
 {
+    #ifdef MAP
+    cout << "Appel au constructeur par défaut de <Sensor>" << endl;
+    #endif
+} //----- Fin du constructeur par défaut
+
+
+//-------------------------------------------- Constructeur avec paramètres
+Sensor::Sensor(string id, float lat, float lon, bool defectueux, PrivateOwner* prop)
+// Algorithme :
+//
+{
+    #ifdef MAP
+    cout << "Appel au constructeur avec paramètres de <Sensor>" << endl;
+    #endif
+
     sensorId = id;
     latitude = lat;
     longitude = lon;
     estDefectueux = defectueux;
     proprietaire = prop;
-}
+} //----- Fin du constructeur avec paramètres
 
-// Destructeur
+
+//-------------------------------------------- Destructeur
 Sensor::~Sensor()
+// Algorithme :
+//
 {
-    delete proprietaire;
-    proprietaire = nullptr;
-}
+    #ifdef MAP
+    cout << "Appel au destructeur de <Sensor>" << endl;
+    #endif
 
-// Getters
+    if (proprietaire != nullptr)
+    {
+        delete proprietaire;
+        proprietaire = nullptr;
+    }
+} //----- Fin du destructeur
+
+
+//-------------------------------------------- Getters
 string Sensor::getSensorId() const
 {
     return sensorId;
@@ -50,7 +88,7 @@ PrivateOwner* Sensor::getProprietaire() const
 }
 
 
-// Setters
+//-------------------------------------------- Setters
 void Sensor::setSensorId(string id)
 {
     sensorId = id;
@@ -77,9 +115,19 @@ void Sensor::setProprietaire(PrivateOwner* owner)
 }
 
 
-// Autres méthodes
+//-------------------------------------------- Autres méthodes
+
+//-------------------------------------------- Méthode pour désactiver le capteur
 void Sensor::desactiverCapteur()
+// Algorithme :
+//
 {
+    #ifdef MAP
+    cout << "Appel à la méthode desactiverCapteur de <Sensor>" << endl;
+    #endif
+
+    // Désactiver le capteur
     estDefectueux = true;
     cout << "Le capteur " << sensorId << " a été désactivé." << endl;
-}
+    
+} //----- Fin de la méthode desactiverCapteur

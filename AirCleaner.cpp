@@ -25,6 +25,10 @@ using namespace std;
 //
 //{
 //} //----- Fin de Méthode
+string AirCleaner::getAirCleanerId()
+{
+    return cleanerId;
+}
 
 
 //------------------------------------------------- Surcharge d'opérateurs

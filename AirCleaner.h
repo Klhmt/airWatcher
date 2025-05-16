@@ -33,6 +33,7 @@ public:
     //
     // Contrat :
     //
+    string getAirCleanerId();
 
 
 //------------------------------------------------- Surcharge d'opérateurs

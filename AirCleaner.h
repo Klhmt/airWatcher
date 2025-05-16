@@ -11,6 +11,7 @@
 #define AIRCLEANER_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include "Provider.h"
 #include <string>
 using namespace std;
 //------------------------------------------------------------- Constantes
@@ -43,7 +44,7 @@ public:
 
 
 //-------------------------------------------- Constructeurs - destructeur
-    AirCleaner ( const string name);
+    AirCleaner (string id, float lon, float lat, Provider* user);
     //Constructeur normal
     
     AirCleaner ( const AirCleaner & unAirCleaner );
@@ -72,7 +73,9 @@ protected:
 //----------------------------------------------------- Attributs protégés
     string cleanerId;
     float latitude;
-    float longtitud;
+    float longtitude;
+    // type de Date ?? start et end
+    Provider* proprietaire;
 };
 
 //-------------------------------- Autres définitions dépendantes de <AirCleaner>

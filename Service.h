@@ -14,6 +14,7 @@
 #include "Measurement.h"
 #include "Sensor.h"
 #include "Date.h"
+#include "Data.h"
 
 #include <string>
 #include <unordered_map>

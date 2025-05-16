@@ -16,9 +16,16 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "Service.h"
-
+#include <cmath>
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
+
+//une function distance:
+int distance(int x1, int y1, int x2, int y2) {
+    return sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+}
+
+
 //----------------------------------------------------- Méthodes publiques
 // type Service::Méthode ( liste des paramètres )
 // Algorithme :
@@ -28,6 +35,10 @@ using namespace std;
 
 
 int Service::determinerFiabiliteCapteur(string sensorId)
+// Algorithme : 
+//
+//{
+//} //----- Fin de Méthode
 {
 
 }
@@ -53,7 +64,8 @@ unordered_map<Sensor,float> Service::indentifierCapteursSimilaires(string sensor
 
 bool Service::bannirCapteur(string sensorId)
 {
-    
+    Data d =  Data();
+    return d.getCapteurParId(sensorId).desactiverCapteur();
 }
 
 
@@ -106,3 +118,24 @@ Service::~Service ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
+
+vector<Sensor> Service::capteursProches(float lat, float lon, float radius)
+{
+    vector<Sensor> listCapteurProche;
+    Data d = Data();
+    vector<Sensor> allCapteur = d.getSensors();
+
+    for (Sensor& capteur : allCapteur)   /// Sensor& ou juste Sensor ????
+    {
+        if (distance(lat,lon,capteur.getLatitude(),capteur.getLongitude()) < radius)
+        {
+            listCapteurProche.push_back(capteur);
+        } 
+    }
+    return listCapteurProche;
+}
+
+int Service::calculerQualiterParCapteur(Sensor sensor, Date start, Date stop)
+{
+
+}

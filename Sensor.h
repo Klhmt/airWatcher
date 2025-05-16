@@ -36,7 +36,7 @@ class Sensor
 
     //-------------------------------------------- Constructeurs 
     Sensor(); 
-    Sensor(string id, float lat, float lon, bool defectueux, PrivateOwner* owner);
+    Sensor(string id, float lat, float lon, bool defectueux, PrivateOwner* prop);
 
     //--------------------------------- Destructeur
     ~Sensor();
@@ -61,7 +61,7 @@ class Sensor
 
     void setEstDefectueux(bool defectueux);
 
-    void setProprietaire(PrivateOwner* owner);
+    void setProprietaire(PrivateOwner* prop);
 
     // Autres méthodes 
     void desactiverCapteur();

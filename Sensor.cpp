@@ -109,9 +109,9 @@ void Sensor::setEstDefectueux(bool defectueux)
     estDefectueux = defectueux;
 }
 
-void Sensor::setProprietaire(PrivateOwner* owner)
+void Sensor::setProprietaire(PrivateOwner* prop)
 {
-    proprietaire = owner;
+    proprietaire = prop;
 }
 
 
@@ -129,5 +129,5 @@ void Sensor::desactiverCapteur()
     // Désactiver le capteur
     estDefectueux = true;
     cout << "Le capteur " << sensorId << " a été désactivé." << endl;
-    
+
 } //----- Fin de la méthode desactiverCapteur

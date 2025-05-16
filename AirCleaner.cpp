@@ -30,6 +30,16 @@ string AirCleaner::getAirCleanerId()
     return cleanerId;
 }
 
+float AirCleaner::getLongtitude()
+{
+    return longtitude;
+}
+
+float AirCleaner::getLatitude()
+{
+    return latitude;
+}
+
 
 //------------------------------------------------- Surcharge d'opérateurs
 AirCleaner & AirCleaner::operator = ( const AirCleaner & unAirCleaner )

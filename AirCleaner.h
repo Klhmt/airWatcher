@@ -35,6 +35,10 @@ public:
     //
     string getAirCleanerId();
 
+    float getLongtitude();
+
+    float getLatitude();
+
 
 //------------------------------------------------- Surcharge d'opérateurs
     AirCleaner & operator = ( const AirCleaner & unAirCleaner );

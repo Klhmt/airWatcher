@@ -12,6 +12,11 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
+#include "Sensor.h"
+#include "Provider.h"
+#include "PrivateOwner.h"
+#include <vector>
+//#include "AirCleaner.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -29,20 +34,9 @@ class Data
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    // type Méthode ( liste des paramètres );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
-
-//------------------------------------------------- Surcharge d'opérateurs
-    //Data & operator = ( const Data & unData );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
+    void loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath);
+    
 
 //-------------------------------------------- Constructeurs - destructeur
     Data ( const Data & unData );
@@ -57,6 +51,8 @@ public:
     // Contrat :
     //
 
+    Data (string path);
+
     virtual ~Data ( );
     // Mode d'emploi :
     //
@@ -67,15 +63,11 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    bool loadAttribute(String chemin);
-    bool loadPrivateOwner(String chemin);
-    bool loadProvider(String chemin);
-    bool loadSensor(String chemin);
-    bool loadAirCleaner(String chemin);
-    bool loadMeasurement(String chemin, )
 
 //----------------------------------------------------- Attributs protégés
-
+    vector<Sensor> sensors;
+    vector<PrivateOwner> privateOwners;
+    string baseFolderPath; // chemin vers le dossier
 };
 
 //-------------------------------- Autres définitions dépendantes de <Data>

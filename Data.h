@@ -71,6 +71,8 @@ protected:
 //----------------------------------------------------- Attributs protégés
     vector<AirCleaner> airCleaners;
     vector<Sensor> sensors;
+    unordered_map<string, Sensor> sensorsMap;
+    vector<Measurement> measurements;
     vector<PrivateOwner> privateOwners;
     string baseFolderPath; // chemin vers le dossier
 };

@@ -95,6 +95,7 @@ bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
         // Créer le capteur (non défectueux par défaut)
         Sensor* s = new Sensor(id, lat, lon, false, owner);
         sensors.push_back(*s); // stocker une copie dans le vecteur
+        sensorsMap[id] = *s; // A tester
     }
 
     sensorFile.close();

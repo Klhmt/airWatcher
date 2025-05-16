@@ -1,3 +1,16 @@
+/*************************************************************************
+                           Sensor  -  description
+                             -------------------
+    début                : $DATE$
+    copyright            : (C) $YEAR$ par $AUTHOR$
+    e-mail               : $EMAIL$
+*************************************************************************/
+
+//---------- Interface de la classe <Sensor> (fichier Sensor.h) ----------------
+#if ! defined ( Sensor_H )
+#define Sensor_H
+
+//---------------------------------------------------------- Includes
 #include <iostream>
 #include <string>
 #include "PrivateOwner.h"
@@ -5,19 +18,30 @@
 using namespace std;
 
 
+//--------------------------------------------------- Interfaces utilisées
+
+//------------------------------------------------------------- Constantes
+//------------------------------------------------------------------ Types
+
+//------------------------------------------------------------------------
+// Rôle de la classe <Sensor>
+//
+//
+//------------------------------------------------------------------------
 
 class Sensor
 {
+    //----------------------------------------------------------------- PUBLIC
     public :
 
-    // Constructeurs
+    //-------------------------------------------- Constructeurs 
     Sensor(); 
     Sensor(string id, float lat, float lon, bool defectueux, PrivateOwner* owner);
 
-    // Destructeur
+    //--------------------------------- Destructeur
     ~Sensor();
 
-    // Getters 
+    //--------------------------------- Getters
     string getSensorId() const;
 
     float getLatitude() const;
@@ -28,7 +52,7 @@ class Sensor
 
     PrivateOwner* getProprietaire() const;
 
-    // Setters
+    //--------------------------------- Setters
     void setSensorId(string id);
 
     void setLatitude(float lat);
@@ -42,6 +66,8 @@ class Sensor
     // Autres méthodes 
     void desactiverCapteur();
 
+    //------------------------------------------------------------------ PRIVE
+
 
     private :
     // Attributs privés
@@ -51,3 +77,7 @@ class Sensor
     bool estDefectueux;
     PrivateOwner* proprietaire;
 };
+
+//-------------------------------- Autres définitions dépendantes de <Sensor>
+
+#endif // Sensor_H

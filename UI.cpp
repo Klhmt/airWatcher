@@ -39,6 +39,53 @@ UI::~UI()
 } //----- Fin du destructeur
   
 
+bool UI::authentification()
+// Algorithme :
+// 
+{
+    bool resultat = false;
+    int choix = 0;
+    cout << "-------------------------------------------------" << endl;
+    cout << "Bienvenue, tout d'abord veuillez vous authentifier : " << endl;
+    cout << "1. Agence Gouvernementale" << endl;
+    cout << "2. Fournisseur" << endl;
+    cout << "3. Particulier" << endl;
+    cout << "4. Quitter l'application" << endl;
+    cin >> choix;
+
+    switch (choix)
+    {
+        case 1:
+            cout << "Vous etes une Agence Gouvernementale" << endl;
+            // Appeler la méthode pour l'agence gouvernementale
+            resultat = true;
+            break;
+
+        case 2:
+            cout << "Vous etes un Fournisseur" << endl;
+            // Appeler la méthode pour le fournisseur
+            resultat = true;
+            break;
+
+        case 3:
+            cout << "Vous etes un Particulier" << endl;
+            // Appeler la méthode pour le particulier
+            resultat = true;
+            break;
+
+        case 4:
+            cout << "Merci d'avoir utilise AirWatcher, au revoir !!!" << endl;
+            break;
+
+        default:
+            cout << "Choix invalide, veuillez reessayer." << endl;
+            authentification();
+            break;
+    }
+
+    return resultat;
+} //----- Fin de la méthode authentification
+
 //-------------------------------------------- Autres méthodes
 void UI::application()
 // Algorithme :

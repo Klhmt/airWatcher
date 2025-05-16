@@ -40,6 +40,7 @@ class UI
     ~UI();
 
     // Autres méthodes 
+    bool authentification();    
     void application();
 
     //------------------------------------------------------------------ PRIVE

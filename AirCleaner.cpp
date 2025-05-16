@@ -50,11 +50,13 @@ AirCleaner & AirCleaner::operator = ( const AirCleaner & unAirCleaner )
 
 
 //-------------------------------------------- Constructeurs - destructeur
-AirCleaner::AirCleaner ( string id, float lon, float lat, Provider* user)
+AirCleaner::AirCleaner ( string id, float lon, float lat, Date start, Date stop, Provider* user)
 {
     cleanerId = id;
     longtitude = lon;
     latitude = lat;
+    start = start;
+    stop = stop;
     proprietaire = user;
 }
 

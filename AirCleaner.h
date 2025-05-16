@@ -12,6 +12,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include "Provider.h"
+#include "Date.h"
 
 #include <string>
 using namespace std;
@@ -50,7 +51,7 @@ public:
 
 
 //-------------------------------------------- Constructeurs - destructeur
-    AirCleaner (string id, float lon, float lat, Provider* user);
+    AirCleaner (string id, float lon, float lat, Date start, Date stop, Provider* user);
     //Constructeur normal
     
     AirCleaner ( const AirCleaner & unAirCleaner );
@@ -80,7 +81,8 @@ protected:
     string cleanerId;
     float latitude;
     float longtitude;
-    // type de Date ?? start et end
+    Date start;
+    Date stop;
     Provider* proprietaire;
 };
 

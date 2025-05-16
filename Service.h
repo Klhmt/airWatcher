@@ -11,8 +11,9 @@
 #define SERVICE_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include "Mesurement.h"
+#include "Measurement.h"
 #include "Sensor.h"
+#include "Date.h"
 
 #include <string>
 #include <unordered_map>
@@ -40,9 +41,9 @@ public:
     //
     int determinerFiabiliteCapteur(string sensorId);
 
-    int calculerQualiterAir(float lat, float lon, float radius, Date start)
+    int calculerQualiterAir(float lat, float lon, float radius, Date start, Date end);
 
-    vector<Mesurement> observerImpactAir();
+    vector<Measurement> observerImpactAir();
 
     unordered_map<Sensor,float> indentifierCapteursSimilaires(string sensorId);
 
@@ -85,6 +86,12 @@ protected:
 //----------------------------------------------------- Méthodes protégées
     
 //----------------------------------------------------- Attributs protégés
+
+private:
+    //Methodes privees
+    vector<Sensor> capteursProches(float lat, float lon, float radius);
+
+    int calculerQualiterParCapteur(Sensor sensor, Date start, Date stop);
 
 };
 

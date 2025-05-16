@@ -1,28 +1,29 @@
 /*************************************************************************
-                           Ensemble  -  description
+                           Data  -  description
                              -------------------
     début                : $DATE$
     copyright            : (C) $YEAR$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <Ensemble> (fichier Ensemble.h) ----------------
-#if ! defined ( ENSEMBLE_H )
-#define ENSEMBLE_H
+//---------- Interface de la classe <Data> (fichier Data.h) ----------------
+#if ! defined ( DATA_H )
+#define DATA_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include <string>
 
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <Ensemble>
+// Rôle de la classe <Data>
 //
 //
 //------------------------------------------------------------------------
 
-class Ensemble 
+class Data 
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -36,7 +37,7 @@ public:
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-    Ensemble & operator = ( const Ensemble & unEnsemble );
+    //Data & operator = ( const Data & unData );
     // Mode d'emploi :
     //
     // Contrat :
@@ -44,19 +45,19 @@ public:
 
 
 //-------------------------------------------- Constructeurs - destructeur
-    Ensemble ( const Ensemble & unEnsemble );
+    Data ( const Data & unData );
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
     //
 
-    Ensemble ( );
+    Data ( );
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    virtual ~Ensemble ( );
+    virtual ~Data ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -66,12 +67,18 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
+    bool loadAttribute(String chemin);
+    bool loadPrivateOwner(String chemin);
+    bool loadProvider(String chemin);
+    bool loadSensor(String chemin);
+    bool loadAirCleaner(String chemin);
+    bool loadMeasurement(String chemin, )
 
 //----------------------------------------------------- Attributs protégés
 
 };
 
-//-------------------------------- Autres définitions dépendantes de <Ensemble>
+//-------------------------------- Autres définitions dépendantes de <Data>
 
-#endif // ENSEMBLE_H
+#endif // Data_H
 

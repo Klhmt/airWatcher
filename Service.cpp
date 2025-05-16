@@ -34,12 +34,17 @@ int distance(int x1, int y1, int x2, int y2) {
 //} //----- Fin de Méthode
 
 
-int Service::determinerFiabiliteCapteur(string sensorId)
-// Algorithme : 
-//
+int Service::determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax)
+// Algorithme : on prend les capteurs voisins dans le radius, on calcule leur qualite moyen 
+//              et compare avec la qualite de ce capteur avec un ecart max
+//              renvoie 0 si erreue (sensorId non valide, pas de capteurs proches ou pas assez de donnees), 1 si fiable et 2 sinon
 //{
 //} //----- Fin de Méthode
 {
+    Sensor* s = data.getCapteurParId(sensorId);
+    if (s == nullptr) return 0;
+
+    vector<Sensor> capteursProches = this->capteursProches()
 
 }
 
@@ -62,10 +67,9 @@ unordered_map<Sensor,float> Service::indentifierCapteursSimilaires(string sensor
 }
 
 
-bool Service::bannirCapteur(string sensorId)
+void Service::bannirCapteur(string sensorId)
 {
-    Data d =  Data();
-    return d.getCapteurParId(sensorId).desactiverCapteur();
+    data.getCapteurParId(sensorId)->desactiverCapteur();
 }
 
 
@@ -122,8 +126,7 @@ Service::~Service ( )
 vector<Sensor> Service::capteursProches(float lat, float lon, float radius)
 {
     vector<Sensor> listCapteurProche;
-    Data d = Data();
-    vector<Sensor> allCapteur = d.getSensors();
+    vector<Sensor> allCapteur = data.getSensors();
 
     for (Sensor& capteur : allCapteur)   /// Sensor& ou juste Sensor ????
     {

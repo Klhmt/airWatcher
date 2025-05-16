@@ -40,7 +40,7 @@ public:
     //
     // Contrat :
     //
-    int determinerFiabiliteCapteur(string sensorId);
+    int determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax);
 
     int calculerQualiterAir(float lat, float lon, float radius, Date start, Date end);
 
@@ -48,7 +48,7 @@ public:
 
     unordered_map<Sensor,float> indentifierCapteursSimilaires(string sensorId);
 
-    bool bannirCapteur(string sensorId);
+    void bannirCapteur(string sensorId);
 
     int consulterRecompense(string userName);
 
@@ -91,6 +91,8 @@ protected:
 private:
     //Methodes privees
     vector<Sensor> capteursProches(float lat, float lon, float radius);
+
+    Data data;
 
     int calculerQualiterParCapteur(Sensor sensor, Date start, Date stop);
 

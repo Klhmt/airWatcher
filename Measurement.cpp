@@ -149,6 +149,5 @@ void Measurement::setMeasurements(vector<float> measurements)
     this->measurements = measurements;
 } //----- Fin de setMeasurements
 
-
 //-------------------------------------------- Autres méthodes
 

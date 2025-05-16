@@ -3,7 +3,7 @@ CXX := g++
 CXXFLAGS := -Wall -Wextra -std=c++17 -g
 
 # Nom de l'exécutable
-TARGET := mon_programme
+TARGET := prog
 
 # Tous les fichiers .cpp du dossier courant
 SRCS := $(wildcard *.cpp)

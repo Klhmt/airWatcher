@@ -39,33 +39,24 @@ class Measurement
 
     //-------------------------------------------- Constructeurs 
     Measurement(); 
-    Measurement(string id, float val, Date* date, Sensor* sensor, vector<float> measurements);
+
+    Measurement(string id, float val, Date* date, Sensor* sensor);
     //--------------------------------- Destructeur
     ~Measurement();
 
     //--------------------------------- Getters
-    string getAttributeId() const;
+    string getAttribute() const;
     float getValue() const;
     Date* getDate() const;
     Sensor* getSensor() const;
-    vector<float> getMeasurements() const;
-
-    //--------------------------------- Setters
-    void setAttributeId(string id);
-    void setValue(float val);
-    void setDate(Date* date);
-    void setSensor(Sensor* sensor);
-    void setMeasurements(vector<float> measurements);
 
 
     private :
     // Attributs privés
-    string attributeId;
+    string attribute;
     float value;
     Date* date;
-    Sensor* sensor;
-    vector<float> measurements;
-    
+    Sensor* sensor;    
 };
 
 //-------------------------------- Autres définitions dépendantes de <Measurement>

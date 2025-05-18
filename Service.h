@@ -46,7 +46,7 @@ public:
 
     vector<Measurement> observerImpactAir();
 
-    unordered_map<Sensor,float> indentifierCapteursSimilaires(string sensorId);
+    unordered_map<Sensor*,float> indentifierCapteursSimilaires(string sensorId);
 
     void bannirCapteur(string sensorId);
 

@@ -28,7 +28,7 @@ Measurement::Measurement()
 
 
 //-------------------------------------------- Constructeur avec paramètres
-Measurement::Measurement(string id, float val, Date* date, Sensor* sensor, vector<float> measurements)
+Measurement::Measurement(string id, float val, Date* date, Sensor* sensor)
 // Algorithme :
 //
 {
@@ -36,11 +36,10 @@ Measurement::Measurement(string id, float val, Date* date, Sensor* sensor, vecto
     cout << "Appel au constructeur avec paramètres de <Measurement>" << endl;
     #endif
 
-    attributeId = id;
+    attribute = id;
     value = val;
     this->date = date;
     this->sensor = sensor;
-    this->measurements = measurements;
 
 } //----- Fin du constructeur avec paramètres
 
@@ -69,11 +68,11 @@ Measurement::~Measurement()
 
 
 //-------------------------------------------- Getters
-string Measurement::getAttributeId() const
+string Measurement::getAttribute() const
 // Algorithme :
 // 
 {
-    return attributeId;
+    return attribute;
 } //----- Fin de getAttributeId
 
 float Measurement::getValue() const
@@ -96,58 +95,6 @@ Sensor* Measurement::getSensor() const
 {
     return sensor;
 } //----- Fin de getSensor
-
-vector<float> Measurement::getMeasurements() const
-// Algorithme :
-// 
-{
-    return measurements;
-} //----- Fin de getMeasurements
-
-
-//-------------------------------------------- Setters
-void Measurement::setAttributeId(string id)
-// Algorithme :
-// 
-{
-    attributeId = id;
-} //----- Fin de setAttributeId
-
-void Measurement::setValue(float val)
-// Algorithme :
-// 
-{
-    value = val;
-} //----- Fin de setValue
-
-void Measurement::setDate(Date* date)
-// Algorithme :
-// 
-{
-    if (this->date != nullptr)
-    {
-        delete this->date;
-    }
-    this->date = date;
-} //----- Fin de setDate
-
-void Measurement::setSensor(Sensor* sensor)
-// Algorithme :
-// 
-{
-    if (this->sensor != nullptr)
-    {
-        delete this->sensor;
-    }
-    this->sensor = sensor;
-} //----- Fin de setSensor
-
-void Measurement::setMeasurements(vector<float> measurements)
-// Algorithme :
-// 
-{
-    this->measurements = measurements;
-} //----- Fin de setMeasurements
 
 //-------------------------------------------- Autres méthodes
 

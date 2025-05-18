@@ -41,11 +41,12 @@ int Service::determinerFiabiliteCapteur(string sensorId, float radius, float eca
 //{
 //} //----- Fin de Méthode
 {
+    /*
     Sensor* s = data.getCapteurParId(sensorId);
     if (s == nullptr) return 0;
 
     vector<Sensor> capteursProches = this->capteursProches()
-
+    */
 }
 
 
@@ -57,11 +58,11 @@ int Service::calculerQualiterAir(float lat, float lon, float radius, Date start,
 
 vector<Measurement> Service::observerImpactAir()
 {
-
+    
 }
 
 
-unordered_map<Sensor,float> Service::indentifierCapteursSimilaires(string sensorId)
+unordered_map<Sensor*,float> Service::indentifierCapteursSimilaires(string sensorId)
 {
 
 }
@@ -69,7 +70,9 @@ unordered_map<Sensor,float> Service::indentifierCapteursSimilaires(string sensor
 
 void Service::bannirCapteur(string sensorId)
 {
-    data.getCapteurParId(sensorId)->desactiverCapteur();
+    // TODO
+    //data.getCapteurParId(sensorId)->desactiverCapteur();
+    return;
 }
 
 
@@ -125,6 +128,7 @@ Service::~Service ( )
 
 vector<Sensor> Service::capteursProches(float lat, float lon, float radius)
 {
+    /*
     vector<Sensor> listCapteurProche;
     vector<Sensor> allCapteur = data.getSensors();
 
@@ -136,6 +140,7 @@ vector<Sensor> Service::capteursProches(float lat, float lon, float radius)
         } 
     }
     return listCapteurProche;
+    */
 }
 
 int Service::calculerQualiterParCapteur(Sensor sensor, Date start, Date stop)

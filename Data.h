@@ -12,16 +12,26 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
+#include <vector>
+#include <map>
+#include <unordered_map>
+
+#include "Date.h"
 #include "Sensor.h"
 #include "Provider.h"
 #include "PrivateOwner.h"
 #include "AirCleaner.h"
-#include <vector>
-//#include "AirCleaner.h"
+#include "Measurement.h"
+#include "AirCleaner.h"
 
+using namespace std;
+
+class Measurement;
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
+
+typedef unordered_map<string, map<Date, vector<Measurement*>>> dataStructure;
 
 //------------------------------------------------------------------------
 // Rôle de la classe <Data>
@@ -38,8 +48,9 @@ public:
 
     bool loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath);
     bool loadProviderAndAirWatcher(const string& providerFilePath, const string& cleanerFilePath);
+    Sensor * getSensorById(string id);
 
-    vector<Sensor> getSensors();
+    vector<Sensor*> getSensors();
     
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -69,11 +80,12 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    vector<AirCleaner> airCleaners;
-    vector<Sensor> sensors;
-    unordered_map<string, Sensor> sensorsMap;
-    vector<Measurement> measurements;
-    vector<PrivateOwner> privateOwners;
+    vector<AirCleaner*> airCleaners;
+    vector<Sensor*> sensors;
+    unordered_map<string, Sensor*> sensorsMap;
+    vector<Measurement*> measurements;
+    vector<PrivateOwner*> privateOwners;
+    vector<Provider*> providers; 
     string baseFolderPath; // chemin vers le dossier
 };
 

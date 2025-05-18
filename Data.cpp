@@ -59,7 +59,7 @@ bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
         {
             PrivateOwner* owner = new PrivateOwner(user, 0);
             mapUser[user] = owner;
-            privateOwners.push_back(*owner);
+            privateOwners.push_back(owner);
         }
 
         // Associer le capteur à ce propriétaire
@@ -94,8 +94,8 @@ bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
 
         // Créer le capteur (non défectueux par défaut)
         Sensor* s = new Sensor(id, lat, lon, false, owner);
-        sensors.push_back(*s); // stocker une copie dans le vecteur
-        sensorsMap[id] = *s; // A tester
+        sensors.push_back(s); // stocker l'objet dans le vector
+        sensorsMap[id] = s; // A tester
     }
 
     sensorFile.close();
@@ -104,85 +104,96 @@ bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
 
 bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const string& cleanerFilePath)
 {
-    unordered_map<string, string> cleanerToProvider;
-    unordered_map<string, Provider*> providers;
+    unordered_map<string, Provider*> providerMap;
+    unordered_map<string, string> cleanerToProviderID;
 
+    // 1. Lire providerFilePath pour associer les cleaners aux providers
     ifstream providerFile(providerFilePath);
-    ifstream cleanerFile(cleanerFilePath);
-
-    if (!providerFile.is_open() || !cleanerFile.is_open())
+    if (!providerFile)
     {
-        cerr << "Erreur d'ouverture des fichiers." << endl;
+        cerr << "Erreur : impossible d'ouvrir " << providerFilePath << endl;
         return false;
     }
 
-    // Lire les associations Provider <-> Cleaner
     string line;
     while (getline(providerFile, line))
     {
-        istringstream iss(line);
+        istringstream ss(line);
         string providerID, cleanerID;
-        if (!(iss >> providerID >> cleanerID)) continue;
-        cleanerToProvider[cleanerID] = providerID;
-    }
 
-    // Lire les informations de chaque cleaner
-    while (getline(cleanerFile, line))
-    {
-        istringstream iss(line);
-        string cleanerID, startDateStr, endDateStr;
-        float lat, lon;
-        int sh, sm, ss, eh, em, es;
-
-        if (!(iss >> cleanerID >> lat >> lon >> startDateStr >> sh >> sm >> ss >> endDateStr >> eh >> em >> es))
+        if (!getline(ss, providerID, ';') || !getline(ss, cleanerID, ';'))
         {
-            cerr << "Erreur de parsing ligne : " << line << endl;
+            cerr << "Format incorrect dans providerFile : " << line << endl;
             continue;
         }
 
-        // Conversion de la date de début
-        int sy, smon, sd;
-        sscanf(startDateStr.c_str(), "%d-%d-%d", &sy, &smon, &sd);
-        Date startDate(sy, smon, sd, sh, sm, ss);
-
-        // Conversion de la date de fin
-        int ey, emon, ed;
-        sscanf(endDateStr.c_str(), "%d-%d-%d", &ey, &emon, &ed);
-        Date endDate(ey, emon, ed, eh, em, es);
-
-        // Chercher ou créer le Provider
-        Provider* provider = nullptr;
-        auto it = cleanerToProvider.find(cleanerID);
-        if (it != cleanerToProvider.end())
+        // Créer le Provider s'il n'existe pas déjà
+        if (providerMap.find(providerID) == providerMap.end())
         {
-            string providerID = it->second;
-            if (providers.find(providerID) == providers.end())
-            {
-                provider = new Provider(providerID);
-                providers[providerID] = provider;
-                // Optionnel : ajouter à ta collection interne
-            }
-            else
-            {
-                provider = providers[providerID];
-            }
+            Provider* p = new Provider(providerID);
+            providerMap[providerID] = p;
+            providers.push_back(p);
         }
 
-        // Créer l'AirCleaner
-        AirCleaner* cleaner = new AirCleaner(cleanerID, lon, lat, startDate, endDate, provider);
-
-        // Optionnel : ajouter le cleaner à ta collection interne
-        airCleaners.push_back(*cleaner);
-        
+        // Stocker temporairement l'association Cleaner → Provider
+        cleanerToProviderID[cleanerID] = providerID;
     }
 
     providerFile.close();
+
+    // 2. Lire cleanerFilePath et créer les AirCleaners
+    ifstream cleanerFile(cleanerFilePath);
+    if (!cleanerFile)
+    {
+        cerr << "Erreur : impossible d'ouvrir " << cleanerFilePath << endl;
+        return false;
+    }
+
+    while (getline(cleanerFile, line))
+    {
+        istringstream ss(line);
+        string id;
+        string latStr, lonStr;
+        string y1, m1, d1, h1, min1, s1;
+        string y2, m2, d2, h2, min2, s2;
+
+        if (!getline(ss, id, ';') ||
+            !getline(ss, latStr, ';') ||
+            !getline(ss, lonStr, ';') ||
+            !getline(ss, y1, '-') || !getline(ss, m1, '-') || !getline(ss, d1, ';') ||
+            !getline(ss, h1, ';') || !getline(ss, min1, ';') || !getline(ss, s1, ';') ||
+            !getline(ss, y2, '-') || !getline(ss, m2, '-') || !getline(ss, d2, ';') ||
+            !getline(ss, h2, ';') || !getline(ss, min2, ';') || !getline(ss, s2, ';'))
+        {
+            cerr << "Format incorrect dans cleanerFile : " << line << endl;
+            continue;
+        }
+
+        float lat = stof(latStr);
+        float lon = stof(lonStr);
+
+        Date start(stoi(y1), stoi(m1), stoi(d1), stoi(h1), stoi(min1), stoi(s1));
+        Date stop(stoi(y2), stoi(m2), stoi(d2), stoi(h2), stoi(min2), stoi(s2));
+
+        // Récupérer le Provider associé
+        Provider* p = nullptr;
+        if (cleanerToProviderID.find(id) != cleanerToProviderID.end())
+        {
+            string providerID = cleanerToProviderID[id];
+            p = providerMap[providerID];
+        }
+
+        // Créer le AirCleaner
+        AirCleaner* cleaner = new AirCleaner(id, lon, lat, start, stop, p);
+        airCleaners.push_back(cleaner);
+    }
+
     cleanerFile.close();
     return true;
 }
 
 
-vector<Sensor> Data::getSensors()
+vector<Sensor*> Data::getSensors()
 {
     return sensors;
 }
@@ -229,12 +240,40 @@ Data::Data ( string path )
 
 
 Data::~Data ( )
-// Algorithme :
-//
 {
 #ifdef MAP
     cout << "Appel au destructeur de <Data>" << endl;
 #endif
+    // Libération mémoire pour éviter que Valgrind nous saute à la figure !!!
+    for (size_t i = 0; i < privateOwners.size(); ++i)
+    {
+        delete privateOwners[i];
+    }
+
+    // Libérer les Sensors
+    for (size_t i = 0; i < sensors.size(); ++i)
+    {
+        delete sensors[i];
+    }
+
+    // Libérer les Measurements
+    for (size_t i = 0; i < measurements.size(); ++i)
+    {
+        delete measurements[i];
+    }
+
+    // Libérer les AirCleaners
+    for (size_t i = 0; i < airCleaners.size(); ++i)
+    {
+        delete airCleaners[i];
+    }
+
+    // Libérer les Providers
+    for (size_t i = 0; i < providers.size(); ++i) {
+        delete providers[i];
+    }
+    providers.clear();
+
 } //----- Fin de ~Data
 
 

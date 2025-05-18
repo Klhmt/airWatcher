@@ -156,3 +156,13 @@ ostream& operator<<(ostream& os, const Date& date)
     return os;
 } //----- Fin de l'opérateur <<
 
+// Surcharge de l'opérateur < pour pouvoir utiliser Date dans une map
+bool operator<(const Date& d1, const Date& d2)
+{
+    if (d1.annee != d2.annee) return d1.annee < d2.annee;
+    if (d1.mois != d2.mois) return d1.mois < d2.mois;
+    if (d1.jour != d2.jour) return d1.jour < d2.jour;
+    if (d1.heure != d2.heure) return d1.heure < d2.heure;
+    if (d1.minute != d2.minute) return d1.minute < d2.minute;
+    return d1.seconde < d2.seconde;
+}

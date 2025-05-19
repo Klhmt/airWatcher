@@ -1,29 +1,28 @@
-# Compilateur et options
 CXX := g++
 CXXFLAGS := -Wall -Wextra -std=c++17 -g
 
-# Nom de l'exécutable
 TARGET := prog
 
-# Tous les fichiers .cpp du dossier courant
-SRCS := $(wildcard *.cpp)
-
-# Remplacement .cpp -> .o
+# Pour prog : tous les .cpp sauf test.cpp
+SRCS := $(filter-out test.cpp, $(wildcard *.cpp))
 OBJS := $(SRCS:.cpp=.o)
 
-# Règle principale
+# Pour test : tous les .cpp sauf main.cpp, mais avec test.cpp inclus
+TEST_SRCS := $(filter-out main.cpp, $(wildcard *.cpp))
+TEST_OBJS := $(TEST_SRCS:.cpp=.o)
+
 all: $(TARGET)
 
-# Générer l'exécutable à partir des .o
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Compilation de chaque .cpp en .o
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Nettoyer les fichiers objets et l'exécutable
-clean:
-	rm -f $(OBJS) $(TARGET)
+test: $(TEST_OBJS)
+	$(CXX) $(CXXFLAGS) -DTEST -I . $^ -o $@
 
-.PHONY: all clean
+clean:
+	rm -f $(OBJS) $(TEST_OBJS) $(TARGET) test
+
+.PHONY: all clean test

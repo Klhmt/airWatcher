@@ -45,6 +45,15 @@ Date::Date(int annee, int mois, int jour, int heure, int minute, int seconde)
 
 } //----- Fin du constructeur avec paramètres
 
+Date::Date ( const Date & unData )
+{
+    annee = unData.annee;
+    mois = unData.mois;
+    jour = unData.jour;
+    heure = unData.heure;
+    minute = unData.minute;
+    seconde = unData.seconde;
+}
 
 //-------------------------------------------- Destructeur
 Date::~Date()

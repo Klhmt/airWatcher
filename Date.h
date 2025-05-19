@@ -40,6 +40,8 @@ class Date
 
     Date(int annee, int mois, int jour, int heure, int minute, int seconde);
 
+    Date(const Date & unDate);
+
     //--------------------------------- Destructeur
     ~Date();
 

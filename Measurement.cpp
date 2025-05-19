@@ -28,7 +28,7 @@ Measurement::Measurement()
 
 
 //-------------------------------------------- Constructeur avec paramètres
-Measurement::Measurement(string id, float val, Date* date, Sensor* sensor)
+Measurement::Measurement(string attribut, float val, Date date, Sensor* sensor)
 // Algorithme :
 //
 {
@@ -36,7 +36,7 @@ Measurement::Measurement(string id, float val, Date* date, Sensor* sensor)
     cout << "Appel au constructeur avec paramètres de <Measurement>" << endl;
     #endif
 
-    attribute = id;
+    attribute = attribut;
     value = val;
     this->date = date;
     this->sensor = sensor;
@@ -52,12 +52,6 @@ Measurement::~Measurement()
     #ifdef MAP
     cout << "Appel au destructeur de <Measurement>" << endl;
     #endif
-
-    if (date != nullptr)
-    {
-        delete date;
-        date = nullptr;
-    }
 
     if (sensor != nullptr)
     {
@@ -82,7 +76,7 @@ float Measurement::getValue() const
     return value;
 } //----- Fin de getValue
 
-Date* Measurement::getDate() const
+Date Measurement::getDate() const
 // Algorithme :
 // 
 {

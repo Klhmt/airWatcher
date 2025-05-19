@@ -192,6 +192,57 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
     return true;
 }
 
+bool Data::loadMeasurements(const string& measurementFilePath) {
+    ifstream file(measurementFilePath);
+    if (!file.is_open()) {
+        cerr << "Erreur : impossible d'ouvrir le fichier " << measurementFilePath << endl;
+        return false;
+    }
+
+    string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string dateStr, hourStr, minStr, secStr;
+        string sensorID, pollutant, valueStr;
+
+        // Lecture des 7 champs séparés par des ;
+        if (!getline(ss, dateStr, ';')) continue;
+        if (!getline(ss, hourStr, ';')) continue;
+        if (!getline(ss, minStr, ';')) continue;
+        if (!getline(ss, secStr, ';')) continue;
+        if (!getline(ss, sensorID, ';')) continue;
+        if (!getline(ss, pollutant, ';')) continue;
+        if (!getline(ss, valueStr, ';')) continue;
+
+        // Parse date "YYYY-MM-DD"
+        int year, month, day;
+        if (sscanf(dateStr.c_str(), "%d-%d-%d", &year, &month, &day) != 3) continue;
+
+        int hour = stoi(hourStr);
+        int minute = stoi(minStr);
+        int second = stoi(secStr);
+        float value = stof(valueStr);
+
+        // Vérification de l'existence du capteur
+        auto it = sensorsMap.find(sensorID);
+        if (it == sensorsMap.end()) {
+            cerr << "Capteur non trouvé : " << sensorID << endl;
+            continue;
+        }
+        Sensor* sensor = it->second;
+
+        // Création des objets
+        Date date = Date(year, month, day, hour, minute, second);
+        Measurement* measurement = new Measurement(pollutant, value, date, sensor);
+
+        // Ajout dans la dataStructure
+        measurements[sensorID][date].push_back(measurement);
+    }
+
+    file.close();
+    return true;
+}
+
 
 vector<Sensor*> Data::getSensors()
 {
@@ -248,31 +299,39 @@ Data::~Data ( )
     for (size_t i = 0; i < privateOwners.size(); ++i)
     {
         delete privateOwners[i];
+        privateOwners[i] = nullptr;
     }
 
     // Libérer les Sensors
     for (size_t i = 0; i < sensors.size(); ++i)
     {
         delete sensors[i];
-    }
-
-    // Libérer les Measurements
-    for (size_t i = 0; i < measurements.size(); ++i)
-    {
-        delete measurements[i];
+        sensors[i] = nullptr;
     }
 
     // Libérer les AirCleaners
     for (size_t i = 0; i < airCleaners.size(); ++i)
     {
         delete airCleaners[i];
+        airCleaners[i] = nullptr;
     }
 
     // Libérer les Providers
     for (size_t i = 0; i < providers.size(); ++i) {
         delete providers[i];
+        providers[i] = nullptr;
     }
     providers.clear();
+
+    // Libérer les Measurement
+    for (pair<const string, map<Date, vector<Measurement*>>>& sensorPair : measurements) {
+        for (pair<const Date, vector<Measurement*>>& datePair : sensorPair.second) {
+            for (Measurement* m : datePair.second) {
+                delete m;
+                m = nullptr;
+            }
+        }
+    }
 
 } //----- Fin de ~Data
 

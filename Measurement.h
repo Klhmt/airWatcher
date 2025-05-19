@@ -40,14 +40,14 @@ class Measurement
     //-------------------------------------------- Constructeurs 
     Measurement(); 
 
-    Measurement(string id, float val, Date* date, Sensor* sensor);
+    Measurement(string attribut, float val, Date date, Sensor* sensor);
     //--------------------------------- Destructeur
     ~Measurement();
 
     //--------------------------------- Getters
     string getAttribute() const;
     float getValue() const;
-    Date* getDate() const;
+    Date getDate() const;
     Sensor* getSensor() const;
 
 
@@ -55,7 +55,7 @@ class Measurement
     // Attributs privés
     string attribute;
     float value;
-    Date* date;
+    Date date;
     Sensor* sensor;    
 };
 

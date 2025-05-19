@@ -48,6 +48,10 @@ public:
 
     bool loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath);
     bool loadProviderAndAirWatcher(const string& providerFilePath, const string& cleanerFilePath);
+    bool loadMeasurements(const string& measurementFilePath);
+    // Contrat :
+    //      Doit être appelée APRES avoir appelé loadPrivateOwnersAndSensors, car l'attribut sensorsMap doit être peuplé
+
     Sensor * getSensorById(string id);
 
     vector<Sensor*> getSensors();
@@ -80,12 +84,12 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    vector<AirCleaner*> airCleaners;
     vector<Sensor*> sensors;
-    unordered_map<string, Sensor*> sensorsMap;
-    vector<Measurement*> measurements;
     vector<PrivateOwner*> privateOwners;
-    vector<Provider*> providers; 
+    vector<Provider*> providers;  
+    vector<AirCleaner*> airCleaners;
+    unordered_map<string, Sensor*> sensorsMap;
+    dataStructure measurements;
     string baseFolderPath; // chemin vers le dossier
 };
 

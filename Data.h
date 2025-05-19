@@ -47,7 +47,9 @@ public:
 //----------------------------------------------------- Méthodes publiques
 
     bool loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath);
+
     bool loadProviderAndAirWatcher(const string& providerFilePath, const string& cleanerFilePath);
+
     bool loadMeasurements(const string& measurementFilePath);
     // Contrat :
     //      Doit être appelée APRES avoir appelé loadPrivateOwnersAndSensors, car l'attribut sensorsMap doit être peuplé
@@ -55,6 +57,16 @@ public:
     Sensor * getSensorById(string id);
 
     vector<Sensor*> getSensors();
+
+    vector<PrivateOwner*> getPrivateOwner();
+
+    vector<Provider*> getProvider();
+
+    vector<AirCleaner*> getAirCleaner();
+
+    unordered_map<string, Sensor*> getSensorsMap();
+
+    dataStructure getMeasurements();
     
 
 //-------------------------------------------- Constructeurs - destructeur

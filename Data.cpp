@@ -243,10 +243,36 @@ bool Data::loadMeasurements(const string& measurementFilePath) {
     return true;
 }
 
+// Getters
 
 vector<Sensor*> Data::getSensors()
 {
     return sensors;
+}
+
+vector<PrivateOwner*> Data::getPrivateOwner()
+{
+    return privateOwners;
+}
+
+vector<Provider*> Data::getProvider()
+{
+    return providers;
+}
+
+vector<AirCleaner*> Data::getAirCleaner()
+{
+    return airCleaners;
+}
+
+unordered_map<string, Sensor*> Data::getSensorsMap()
+{
+    return sensorsMap;
+}
+
+dataStructure Data::getMeasurements()
+{
+    return measurements;
 }
 
 

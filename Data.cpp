@@ -152,18 +152,13 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
     while (getline(cleanerFile, line))
     {
         istringstream ss(line);
-        string id;
-        string latStr, lonStr;
-        string y1, m1, d1, h1, min1, s1;
-        string y2, m2, d2, h2, min2, s2;
+        string id, latStr, lonStr, startStr, stopStr;
 
         if (!getline(ss, id, ';') ||
             !getline(ss, latStr, ';') ||
             !getline(ss, lonStr, ';') ||
-            !getline(ss, y1, '-') || !getline(ss, m1, '-') || !getline(ss, d1, ';') ||
-            !getline(ss, h1, ';') || !getline(ss, min1, ';') || !getline(ss, s1, ';') ||
-            !getline(ss, y2, '-') || !getline(ss, m2, '-') || !getline(ss, d2, ';') ||
-            !getline(ss, h2, ';') || !getline(ss, min2, ';') || !getline(ss, s2, ';'))
+            !getline(ss, startStr, ';') ||
+            !getline(ss, stopStr, ';'))
         {
             cerr << "Format incorrect dans cleanerFile : " << line << endl;
             continue;
@@ -172,8 +167,15 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
         float lat = stof(latStr);
         float lon = stof(lonStr);
 
-        Date start(stoi(y1), stoi(m1), stoi(d1), stoi(h1), stoi(min1), stoi(s1));
-        Date stop(stoi(y2), stoi(m2), stoi(d2), stoi(h2), stoi(min2), stoi(s2));
+        // Découper startStr et stopStr manuellement
+        int y1, m1, d1, h1, min1, s1;
+        int y2, m2, d2, h2, min2, s2;
+
+        sscanf(startStr.c_str(), "%d-%d-%d %d:%d:%d", &y1, &m1, &d1, &h1, &min1, &s1);
+        sscanf(stopStr.c_str(),  "%d-%d-%d %d:%d:%d", &y2, &m2, &d2, &h2, &min2, &s2);
+
+        Date start(y1, m1, d1, h1, min1, s1);
+        Date stop(y2, m2, d2, h2, min2, s2);
 
         // Récupérer le Provider associé
         Provider* p = nullptr;
@@ -187,6 +189,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
         AirCleaner* cleaner = new AirCleaner(id, lon, lat, start, stop, p);
         airCleaners.push_back(cleaner);
     }
+
 
     cleanerFile.close();
     return true;

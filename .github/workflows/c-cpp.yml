@@ -2,7 +2,7 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ "master" , "devK" ]
+    branches: [ "master"]
   pull_request:
     branches: [ "master" ]
 
@@ -13,7 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: make
+
+    - name: Build project
       run: make
 
-
+    - name: Run tests
+      run: make test && ./test

@@ -3,6 +3,7 @@
 
 
 #include "Data.h"
+#include "Date.h"
 
 void printDataStructure(const dataStructure& data)
 {
@@ -52,9 +53,16 @@ TEST_CASE("Testing data")
     }
     SUBCASE("Chargement des Measurements")
     {
+        // nécessaire avant de charger les mesures
         data.loadPrivateOwnersAndSensors("./dataset/users.csv", "./dataset/sensors.csv");
-        CHECK(data.loadMeasurements("./dataset/measurements_test.csv"));
+        data.loadMeasurements("./dataset/measurements_test.csv");
+        dataStructure donnees = data.getMeasurements();
+        CHECK(donnees.size() == 2);
+        //Date d = Date(2019, 12, 01, 12, 00, 00);
+        //cout << donnees["Sensor64"][d][0]->getValue() << endl;
         
+        
+        //CHECK(data.loadMeasurements("./dataset/measurements_test.csv"));
         //CHECK(data.getMeasurements().size() == 2);
         //CHECK(data.getMeasurements()["Sensor0"].size() == 6);
     }

@@ -32,7 +32,7 @@ string AirCleaner::getAirCleanerId()
 
 float AirCleaner::getLongtitude()
 {
-    return longtitude;
+    return longitude;
 }
 
 float AirCleaner::getLatitude()
@@ -42,10 +42,20 @@ float AirCleaner::getLatitude()
 
 
 //------------------------------------------------- Surcharge d'opérateurs
+// Non testé
 AirCleaner & AirCleaner::operator = ( const AirCleaner & unAirCleaner )
 // Algorithme :
 //
 {
+    if (this != &unAirCleaner) {
+        cleanerId = unAirCleaner.cleanerId;
+        latitude = unAirCleaner.latitude;
+        longitude = unAirCleaner.longitude;
+        start = unAirCleaner.start;
+        stop = unAirCleaner.stop;
+        proprietaire = unAirCleaner.proprietaire; // Copie superficielle du pointeur
+    }
+    return *this;
 } //----- Fin de operator =
 
 
@@ -53,7 +63,7 @@ AirCleaner & AirCleaner::operator = ( const AirCleaner & unAirCleaner )
 AirCleaner::AirCleaner ( string id, float lon, float lat, Date start, Date stop, Provider* user)
 {
     cleanerId = id;
-    longtitude = lon;
+    longitude = lon;
     latitude = lat;
     start = start;
     stop = stop;

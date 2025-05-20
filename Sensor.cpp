@@ -115,12 +115,9 @@ void Sensor::setProprietaire(PrivateOwner* prop)
 }
 
 
-//-------------------------------------------- Autres méthodes
+//-------------------------------------------- Méthodes
 
-//-------------------------------------------- Méthode pour désactiver le capteur
 void Sensor::desactiverCapteur()
-// Algorithme :
-//
 {
     #ifdef MAP
     cout << "Appel à la méthode desactiverCapteur de <Sensor>" << endl;

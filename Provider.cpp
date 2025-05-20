@@ -20,11 +20,6 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
 //----------------------------------------------------- Méthodes publiques
-// type Provider::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
 
 
 //------------------------------------------------- Surcharge d'opérateurs

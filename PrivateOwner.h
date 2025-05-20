@@ -25,7 +25,7 @@ using namespace std;
 //------------------------------------------------------------------------
 // Rôle de la classe <PrivateOwner>
 //
-//
+//  Modélise un particulier qui possède un ou des capteurs
 //------------------------------------------------------------------------
 
 
@@ -36,9 +36,12 @@ class PrivateOwner
 
     //-------------------------------------------- Constructeurs - destructeur
     PrivateOwner(string name, int pts);
+    // Constructeur utilisé dans l'app
+
+    PrivateOwner();
+    // Constructeur par défaut
 
     ~PrivateOwner();
-
 
     //------------------------------------------------------------------ PRIVE
 

@@ -80,7 +80,7 @@ protected:
 //----------------------------------------------------- Attributs protégés
     string cleanerId;
     float latitude;
-    float longtitude;
+    float longitude;
     Date start;
     Date stop;
     Provider* proprietaire;

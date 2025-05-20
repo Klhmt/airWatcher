@@ -19,7 +19,7 @@ using namespace std;
 //------------------------------------------------------------------------
 // Rôle de la classe <Provider>
 //
-//
+//  Modélise un provider d'AirCleaner
 //------------------------------------------------------------------------
 
 class Provider 
@@ -28,42 +28,22 @@ class Provider
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    // type Méthode ( liste des paramètres );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
 
 //------------------------------------------------- Surcharge d'opérateurs
     Provider & operator = ( const Provider & unProvider );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
 
 //-------------------------------------------- Constructeurs - destructeur
     Provider ( const string name);
-    //Constructeur normal
+    // Constructeur utilisé dans l'app
     
     Provider ( const Provider & unProvider );
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
+    // Constructeur de copie
 
     Provider (  );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    // Constructeur par défaut
 
     virtual ~Provider ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    // Destructeur
 
 //------------------------------------------------------------------ PRIVE
 

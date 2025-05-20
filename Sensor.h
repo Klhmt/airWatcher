@@ -26,7 +26,7 @@ using namespace std;
 //------------------------------------------------------------------------
 // Rôle de la classe <Sensor>
 //
-//
+//  Modélise un capteur
 //------------------------------------------------------------------------
 
 class Sensor
@@ -36,6 +36,7 @@ class Sensor
 
     //-------------------------------------------- Constructeurs 
     Sensor(); 
+
     Sensor(string id, float lat, float lon, bool defectueux, PrivateOwner* prop);
 
     //--------------------------------- Destructeur
@@ -63,14 +64,16 @@ class Sensor
 
     void setProprietaire(PrivateOwner* prop);
 
-    // Autres méthodes 
+    // Méthodes 
+
     void desactiverCapteur();
+    // Mode d'emploi : marque le capteur comme défectueux. Permet de ne plus utiliser les mesures de ce capteurs
 
     //------------------------------------------------------------------ PRIVE
 
 
     private :
-    // Attributs privés
+
     string sensorId;
     float latitude;
     float longitude;

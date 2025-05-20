@@ -21,13 +21,20 @@ PrivateOwner::PrivateOwner(string name, int pts)
 // Algorithme :
 //
 {
-    #ifdef MAP
-    cout << "Appel au constructeur de <PrivateOwner>" << endl;
-    #endif
+#ifdef MAP
+cout << "Appel au constructeur paramétré de <PrivateOwner>" << endl;
+#endif
 
     userName = name;
     points = pts;
 } //----- Fin du constructeur
+
+PrivateOwner::PrivateOwner()
+{
+#ifdef MAP
+cout << "Appel au constructeur par défaut de <PrivateOwner>" << endl;
+#endif
+}
 
 
 //-------------------------------------------- Destructeur

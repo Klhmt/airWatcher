@@ -35,70 +35,79 @@ using namespace std;
 
 bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath)
 {
-    unordered_map<string, PrivateOwner*> mapUser;        // map de nom vers pointeur
-    unordered_map<string, PrivateOwner*> sensorToOwner;  // map de capteur vers propriétaire
+    unordered_map<string, PrivateOwner*> assocSensorOwner; // sensorID: PrivateOwner *
+    unordered_map<string, PrivateOwner*> uniquePrivateOwners; // userID: PrivateOwner *
 
-    // 1. Lire User.csv
-    ifstream userFile(userPath);
+    ifstream file(userPath);
+    if (!file.is_open()) {
+        cout << "Erreur : impossible d'ouvrir le fichier " << userPath << endl;
+        return false;
+    }
+
     string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string userID, sensorID;
 
-    if (!userFile)
-    {
-        cerr << "Erreur : impossible d'ouvrir " << userPath << endl;
+        // Lecture des 3 champs séparés par des ;
+        if (!getline(ss, userID, ';')) continue;
+        if (!getline(ss, sensorID, ';')) continue;
+
+        
+
+        PrivateOwner * user = nullptr;
+        if (uniquePrivateOwners.find(userID) == uniquePrivateOwners.end())
+        {
+            user = new PrivateOwner(userID, 0);
+            privateOwners.push_back(user);
+            uniquePrivateOwners[userID] = user;
+        }
+        else
+        {
+            user = uniquePrivateOwners[userID];
+        }
+
+        assocSensorOwner[sensorID] = user;
+        
+    }
+    
+    file.close();
+
+    ifstream file2(sensorPath);
+    if (!file2.is_open()) {
+        cout << "Erreur : impossible d'ouvrir le fichier " << sensorPath << endl;
         return false;
     }
 
-    while (getline(userFile, line))
-    {
-        istringstream ss(line);
-        string user, sensor;
-        ss >> user >> sensor;
+    while (getline(file2, line)) {
+        stringstream ss(line);
+        string sensorID, latitude, longitude;
 
-        // Créer le propriétaire s'il n'existe pas déjà
-        if (mapUser.find(user) == mapUser.end())
+        // Lecture des 3 champs séparés par des ;
+        if (!getline(ss, sensorID, ';')) continue;
+        if (!getline(ss, latitude, ';')) continue;
+        if (!getline(ss, longitude, ';')) continue;
+
+        float latitudeConvertie = 0;
+        float longitudeConvertie = 0;
+
+        // Mettre un try catch pour gérer erreur ??
+        latitudeConvertie = stof(latitude);
+        longitudeConvertie = stof(longitude);
+
+        PrivateOwner * owner = nullptr;
+        if (assocSensorOwner.find(sensorID) != assocSensorOwner.end())
         {
-            PrivateOwner* owner = new PrivateOwner(user, 0);
-            mapUser[user] = owner;
-            privateOwners.push_back(owner);
+            owner = assocSensorOwner[sensorID];
         }
 
-        // Associer le capteur à ce propriétaire
-        sensorToOwner[sensor] = mapUser[user];
+        Sensor * sensor = new Sensor(sensorID, latitudeConvertie, longitudeConvertie, false, owner);
+        sensors.push_back(sensor);
+        sensorsMap[sensorID] = sensor;
+
     }
 
-    userFile.close();
-
-    // 2. Lire Sensor.csv
-    ifstream sensorFile(sensorPath);
-
-    if (!sensorFile)
-    {
-        cerr << "Erreur : impossible d'ouvrir " << sensorPath << endl;
-        return false;
-    }
-
-    while (getline(sensorFile, line))
-    {
-        istringstream ss(line);
-        string id;
-        float lat, lon;
-
-        ss >> id >> lat >> lon;
-
-        // Récupérer propriétaire ou nullptr
-        PrivateOwner* owner = nullptr;
-        if (sensorToOwner.find(id) != sensorToOwner.end())
-        {
-            owner = sensorToOwner[id];
-        }
-
-        // Créer le capteur (non défectueux par défaut)
-        Sensor* s = new Sensor(id, lat, lon, false, owner);
-        sensors.push_back(s); // stocker l'objet dans le vector
-        sensorsMap[id] = s; // A tester
-    }
-
-    sensorFile.close();
+    file2.close();
     return true;
 }
 
@@ -195,47 +204,82 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
     return true;
 }
 
+// For debug purposes
+void Data::printDataStructure()
+{
+    for (const auto& sensorEntry : measurements)
+    {
+        const string& sensorID = sensorEntry.first;
+        const map<Date, vector<Measurement*>>& measurementsByDate = sensorEntry.second;
+
+        cout << "Sensor ID: " << sensorID << endl;
+
+        for (const auto& dateEntry : measurementsByDate)
+        {
+            const Date& date = dateEntry.first;
+            const vector<Measurement*>& measurements = dateEntry.second;
+
+            cout << "  Date: " << date << endl; // ou cout << date << si operator<< existe
+
+            for (const Measurement* m : measurements)
+            {
+                // À adapter selon ce que Measurement contient
+                cout << "    ";
+                cout << "Type: " << m->getAttribute() << ", ";
+                cout << "Value: " << m->getValue() << endl;
+            }
+        }
+
+        cout << "----------------------------------" << endl;
+    }
+}
+
+// For debug purpoes
+void Data::printSensorsMap()
+{
+    for (const auto& pair : sensorsMap) {
+        cout << "Key: " << pair.first << ", Value: " << (*(pair.second)).getSensorId() << endl;
+    }
+}
+
 bool Data::loadMeasurements(const string& measurementFilePath) {
     ifstream file(measurementFilePath);
     if (!file.is_open()) {
-        cerr << "Erreur : impossible d'ouvrir le fichier " << measurementFilePath << endl;
+        cout << "Erreur : impossible d'ouvrir le fichier " << measurementFilePath << endl;
         return false;
     }
 
     string line;
     while (getline(file, line)) {
         stringstream ss(line);
-        string dateStr, hourStr, minStr, secStr;
-        string sensorID, pollutant, valueStr;
+        string datetimeStr, sensorID, pollutant, valueStr;
 
-        // Lecture des 7 champs séparés par des ;
-        if (!getline(ss, dateStr, ';')) continue;
-        if (!getline(ss, hourStr, ';')) continue;
-        if (!getline(ss, minStr, ';')) continue;
-        if (!getline(ss, secStr, ';')) continue;
+        // Lecture des 5 champs séparés par des ;
+        if (!getline(ss, datetimeStr, ';')) continue;
         if (!getline(ss, sensorID, ';')) continue;
         if (!getline(ss, pollutant, ';')) continue;
         if (!getline(ss, valueStr, ';')) continue;
 
-        // Parse date "YYYY-MM-DD"
-        int year, month, day;
-        if (sscanf(dateStr.c_str(), "%d-%d-%d", &year, &month, &day) != 3) continue;
+        // Parse datetime "YYYY-MM-DD HH:MM:SS"
+        int year, month, day, hour, minute, second;
+        if (sscanf(datetimeStr.c_str(), "%d-%d-%d %d:%d:%d",
+                   &year, &month, &day, &hour, &minute, &second) != 6) {
+            cout << "Format de date/heure invalide : " << datetimeStr << endl;
+            continue;
+        }
 
-        int hour = stoi(hourStr);
-        int minute = stoi(minStr);
-        int second = stoi(secStr);
         float value = stof(valueStr);
 
         // Vérification de l'existence du capteur
         auto it = sensorsMap.find(sensorID);
         if (it == sensorsMap.end()) {
-            cerr << "Capteur non trouvé : " << sensorID << endl;
+            cout << "Capteur non trouvé : " << sensorID << endl;
             continue;
         }
         Sensor* sensor = it->second;
 
         // Création des objets
-        Date date = Date(year, month, day, hour, minute, second);
+        Date date(year, month, day, hour, minute, second);
         Measurement* measurement = new Measurement(pollutant, value, date, sensor);
 
         // Ajout dans la dataStructure

@@ -52,12 +52,6 @@ Sensor::~Sensor()
     #ifdef MAP
     cout << "Appel au destructeur de <Sensor>" << endl;
     #endif
-
-    if (proprietaire != nullptr)
-    {
-        delete proprietaire;
-        proprietaire = nullptr;
-    }
 } //----- Fin du destructeur
 
 

@@ -36,7 +36,7 @@ typedef unordered_map<string, map<Date, vector<Measurement*>>> dataStructure;
 //------------------------------------------------------------------------
 // Rôle de la classe <Data>
 //
-//
+//  Read CSV files, creates domain objet and put them into STL containers
 //------------------------------------------------------------------------
 
 class Data 
@@ -46,13 +46,52 @@ class Data
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    bool loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath);
+    // This function loads private owner and sensor data from two specified files.
+    // It populates the 'privateOwners', 'sensors', and 'sensorsMap' members of the Data class.
+    //
+    // Parameters:
+    //   userPath: The file path to the private owner (user) data. Format: userID;sensorID;
+    //   sensorPath: The file path to the sensor data. Format: sensorID;latitude;longitude;
+    //
+    // Returns:
+    //   true if both files are successfully opened and processed; false otherwise.
+    bool loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath); 
 
+    // This function loads provider and air cleaner data from two specified files.
+    // It populates the 'providers' (vector<Provider*>) and 'airCleaners' (vector<AirCleaner*>)
+    // members of the Data class.
+    //
+    // Parameters:
+    //   providerFilePath: Path to the provider association file. Format: providerID;cleanerID;
+    //   cleanerFilePath: Path to the air cleaner details file. Format: id;lat;lon;startStr;stopStr;
+    //
+    // Returns:
+    //   true if both files are successfully opened and processed; false otherwise
     bool loadProviderAndAirWatcher(const string& providerFilePath, const string& cleanerFilePath);
 
+
+    // This function loads environmental measurement data from a specified file.
+    // It populates the 'measurements' member of the Data class, which is assumed
+    // to be a complex data structure (e.g., unordered_map<string, unordered_map<Date, vector<Measurement*>>>).
+    //
+    //  CONTRACT : loadPrivateOwnersAndSensors has to be called BEFORE to populate sensorsMap & sensors attributes
+    //
+    // Parameters:
+    //   measurementFilePath: The file path to the measurement data.
+    //                        Format per line: datetime;sensorID;pollutant;value;
+    //                        datetime format: YYYY-MM-DD HH:MM:SS
+    //
+    // Returns:
+    //   true if the file is successfully opened and processed; false otherwise.
     bool loadMeasurements(const string& measurementFilePath);
-    // Contrat :
-    //      Doit être appelée APRES avoir appelé loadPrivateOwnersAndSensors, car l'attribut sensorsMap doit être peuplé
+
+    // Display measurements attribute on std::cout. For debugging purposes only
+    void printDataStructure();
+
+    // Display sensorsMap attribute on std::cout. For debugging purposes only
+    void printSensorsMap();
+
+    //-------- Getters ---------
 
     Sensor * getSensorById(string id);
 
@@ -71,24 +110,19 @@ public:
 
 //-------------------------------------------- Constructeurs - destructeur
     Data ( const Data & unData );
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
 
     Data ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
     Data (string path);
 
+    // Destructor for the Data class.
+    // This destructor is responsible for deallocating all dynamically allocated
+    // objects (PrivateOwner, Sensor, AirCleaner, Provider, Measurement)
+    // that were stored in the Data class's member vectors and maps.
+    // It frees the dynamically allocated memory, then sets the pointer to nullptr to avoid dangling pointers.
+    // We do that because otherwise Valgrind is gonna scream at us :) !!!
     virtual ~Data ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    
 
 //------------------------------------------------------------------ PRIVE
 

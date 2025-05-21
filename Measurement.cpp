@@ -52,12 +52,6 @@ Measurement::~Measurement()
     #ifdef MAP
     cout << "Appel au destructeur de <Measurement>" << endl;
     #endif
-
-    if (sensor != nullptr)
-    {
-        delete sensor;
-        sensor = nullptr;
-    }
 } //----- Fin du destructeur
 
 

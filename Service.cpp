@@ -34,19 +34,31 @@ int distance(int x1, int y1, int x2, int y2) {
 //} //----- Fin de Méthode
 
 
-int Service::determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax)
+int Service::determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax, Date debut, Date fin)
 // Algorithme : on prend les capteurs voisins dans le radius, on calcule leur qualite moyen 
 //              et compare avec la qualite de ce capteur avec un ecart max
 //              renvoie 0 si erreue (sensorId non valide, pas de capteurs proches ou pas assez de donnees), 1 si fiable et 2 sinon
 //{
 //} //----- Fin de Méthode
-{
-    /*
-    Sensor* s = data.getCapteurParId(sensorId);
+{    
+    //Get le capteur a determiner et ses voisins dans le radius
+    Sensor* s = data.getSensorById(sensorId);
     if (s == nullptr) return 0;
+    vector<Sensor*> capteursProches = this->capteursProches(s->getLatitude(),s->getLongitude(),radius);
+    if (capteursProches.size()==0) return 0;
 
-    vector<Sensor> capteursProches = this->capteursProches()
-    */
+    //Calculer le moyen et comparer
+    int sum = 0;
+    int count = 0;
+    for (Sensor* capteur : capteursProches)
+    {
+        sum += calculerQualiterParCapteur(capteur,debut, fin);
+        count++;
+    }
+    int moyen = sum/count;
+    int qS = calculerQualiterParCapteur(s, debut,fin);
+    if((qS<moyen*(1+ecartMax/100)) && (qS>moyen*(1-ecartMax/100))) return 1;
+    else return 0;
 }
 
 
@@ -70,9 +82,7 @@ unordered_map<Sensor*,float> Service::indentifierCapteursSimilaires(string senso
 
 void Service::bannirCapteur(string sensorId)
 {
-    // TODO
-    //data.getCapteurParId(sensorId)->desactiverCapteur();
-    return;
+    data.getSensorById(sensorId)->desactiverCapteur();
 }
 
 
@@ -126,24 +136,23 @@ Service::~Service ( )
 
 //----------------------------------------------------- Méthodes protégées
 
-vector<Sensor> Service::capteursProches(float lat, float lon, float radius)
+vector<Sensor*> Service::capteursProches(float lat, float lon, float radius)
 {
-    /*
-    vector<Sensor> listCapteurProche;
-    vector<Sensor> allCapteur = data.getSensors();
+    
+    vector<Sensor*> listCapteurProche;
+    vector<Sensor*> allCapteur = data.getSensors();
 
-    for (Sensor& capteur : allCapteur)   /// Sensor& ou juste Sensor ????
+    for (Sensor* capteur : allCapteur)   /// Sensor& ou juste Sensor ????
     {
-        if (distance(lat,lon,capteur.getLatitude(),capteur.getLongitude()) < radius)
+        if (distance(lat,lon,capteur->getLatitude(),capteur->getLongitude()) < radius)
         {
             listCapteurProche.push_back(capteur);
         } 
     }
     return listCapteurProche;
-    */
 }
 
-int Service::calculerQualiterParCapteur(Sensor sensor, Date start, Date stop)
+int Service::calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop)
 {
 
 }

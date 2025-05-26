@@ -40,7 +40,7 @@ public:
     //
     // Contrat :
     //
-    int determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax);
+    int determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax, Date debut, Date fin);
 
     int calculerQualiterAir(float lat, float lon, float radius, Date start, Date end);
 
@@ -90,11 +90,11 @@ protected:
 
 private:
     //Methodes privees
-    vector<Sensor> capteursProches(float lat, float lon, float radius);
+    vector<Sensor*> capteursProches(float lat, float lon, float radius);
 
     Data data;
 
-    int calculerQualiterParCapteur(Sensor sensor, Date start, Date stop);
+    int calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop);
 
 };
 

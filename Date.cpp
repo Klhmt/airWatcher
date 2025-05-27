@@ -195,15 +195,15 @@ bool operator==(const Date &d1, const Date &d2)
 bool operator>(const Date &d1, const Date &d2)
 {
     if (d1.annee != d2.annee)
-        return d1.annee < d2.annee;
+        return d2.annee < d1.annee;
     if (d1.mois != d2.mois)
-        return d1.mois < d2.mois;
+        return d2.mois < d1.mois;
     if (d1.jour != d2.jour)
-        return d1.jour < d2.jour;
+        return d2.jour < d1.jour;
     if (d1.heure != d2.heure)
-        return d1.heure < d2.heure;
-    if (d1.minute != d2.minute)
-        return d1.minute < d2.minute;
+        return d2.heure < d2.heure;
+    if (d1.minute != d1.minute)
+        return d2.minute < d1.minute;
     return d2.seconde < d1.seconde;
 }
 

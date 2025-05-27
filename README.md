@@ -2,13 +2,12 @@
 # Auteurs : MARNAS Léo, JACQUIER Clément, VANNESTE Nathan, TRAN Bao Huy
 AirWatcher Software Engineering Project 
 
-# Installation
+# Installation et Compilation
 ``` bash
 git clone https://github.com/Klhmt/airWatcher.git
-```
-
-# Compilation
+cd airWatcher
 make
+```
 
 # Lancement de l'application
 ./AirWatcher

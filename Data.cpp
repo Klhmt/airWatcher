@@ -297,6 +297,15 @@ vector<Sensor*> Data::getSensors()
     return sensors;
 }
 
+Sensor* Data::getSensorById(std::string id) {
+    std::unordered_map<std::string, Sensor*>::iterator it = sensorsMap.find(id);
+    if (it != sensorsMap.end()) {
+        return it->second;
+    } else {
+        return nullptr;
+    }
+}
+
 vector<PrivateOwner*> Data::getPrivateOwner()
 {
     return privateOwners;

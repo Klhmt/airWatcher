@@ -107,7 +107,11 @@ unordered_map<Sensor*,float> Service::indentifierCapteursSimilaires(string senso
 
 void Service::bannirCapteur(string sensorId)
 {
-    data.getSensorById(sensorId)->desactiverCapteur();
+    Sensor * sensor = data.getSensorById(sensorId);
+    if (sensor != nullptr)
+    {
+        sensor->desactiverCapteur();
+    }
 }
 
 
@@ -141,6 +145,7 @@ Service::Service ( )
 // Algorithme :
 //
 {
+    data = Data("./dataset/_fileGroupOrigine.csv");
 #ifdef MAP
     cout << "Appel au constructeur de <Service>" << endl;
 #endif

@@ -113,6 +113,12 @@ public:
 
     Data ( );
 
+    // Constructor : the fileGroupPath is the path to a CSV file containing the path to the dataset, in this order and format (1 path by line): 
+    // Path to providers.csv
+    // Path to cleaners.csv
+    // Path to users.csv
+    // Path to sensors.csv
+    // Path to mesurements.csv
     Data (const string& fileGroupePath );
 
     // Destructor for the Data class.

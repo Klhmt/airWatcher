@@ -35,7 +35,7 @@ class Date
     
     //------------------------------------------Surcharges operateurs
     friend bool operator<(const Date& d1, const Date& d2);
-    bool Date::operator == (const Date& unDate );
+    bool operator == (const Date& unDate );
     
     //-------------------------------------------- Constructeurs 
     Date(); 

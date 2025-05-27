@@ -2,6 +2,6 @@
 *.o
 
 # Ignorer l'exécutable et l'exécutable test
-prog
+AirWatcher
 test
 .vscode/settings.json

@@ -53,6 +53,7 @@ bool UI::authentification()
     cout << "2. Fournisseur" << endl;
     cout << "3. Particulier" << endl;
     cout << "4. Quitter l'application" << endl;
+    cout << "Veuillez entrer votre choix : ";
     cin >> choix;
 
     switch (choix)
@@ -117,7 +118,7 @@ void UI::application()
             cout << "Veuillez entrer le numero du capteur : ";
             cin >> numeroCapteur;
 
-            
+
             // Appel méthode determinerFiabiliteCapteur
 
             break;

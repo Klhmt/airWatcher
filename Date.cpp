@@ -202,7 +202,7 @@ bool operator>(const Date &d1, const Date &d2)
         return d2.jour < d1.jour;
     if (d1.heure != d2.heure)
         return d2.heure < d1.heure;
-    if (d1.minute != d1.minute)
+    if (d1.minute != d2.minute)
         return d2.minute < d1.minute;
     return d2.seconde < d1.seconde;
 }

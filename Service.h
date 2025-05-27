@@ -46,6 +46,8 @@ public:
 
     int calculerQualiterAir(float lat, float lon, float radius, Date start, Date end);
 
+    bool verifierExistenceCapteur(string sensorId);
+
     vector<Measurement> observerImpactAir();
 
     unordered_map<Sensor*,float> indentifierCapteursSimilaires(string sensorId);
@@ -84,6 +86,9 @@ public:
     //
     // Contrat :
     //
+    
+    int calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop);
+
 
 //------------------------------------------------------------------ PRIVE
 
@@ -98,7 +103,6 @@ private:
 
     Data data;
 
-    int calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop);
 
 };
 

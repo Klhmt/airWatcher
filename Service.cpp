@@ -93,6 +93,12 @@ int Service::calculerQualiterAir(float lat, float lon, float radius, Date start,
 }
 
 
+bool Service::verifierExistenceCapteur(string sensorId)
+{
+    return data.getSensorsMap().find(sensorId) != data.getSensorsMap().end();
+}
+
+
 vector<Measurement> Service::observerImpactAir()
 {
     

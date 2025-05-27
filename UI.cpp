@@ -93,11 +93,13 @@ void UI::application()
 // Algorithme :
 //
 {
-    Date date;
+    Date date, dateDebut, dateFin;
     int jour, mois, annee;
     int heure, minute, seconde;
 
     int latitude, longitude, rayon;
+
+    bool verificationDate = false;
 
     int choix = 0;
     cout << "-------------------------------------------------" << endl;
@@ -131,11 +133,30 @@ void UI::application()
             cout << "Veuillez entrer l'heure de debut (hh:mm) : ";
             date.lireHeure(heure, minute, seconde);
 
+            dateDebut = Date(annee, mois, jour, heure, minute, seconde);
+
             cout << "Veuillez entrer la date de fin (jj/mm/yyyy) : ";
             date.lireDate(jour, mois, annee);
 
             cout << "Veuillez entrer l'heure de fin (hh:mm) : ";
             date.lireHeure(heure, minute, seconde);
+
+            dateFin = Date(annee, mois, jour, heure, minute, seconde);
+
+            verificationDate = (dateDebut < dateFin);
+
+            while (!verificationDate)
+            {
+                cout << "Veuillez mettre une date de fin posterieure a la date de debut : " ;
+                date.lireDate(jour, mois, annee);
+                
+                cout << "Veuillez entrer l'heure de fin (hh:mm) : ";
+                date.lireHeure(heure, minute, seconde);
+                
+                dateFin = Date(annee, mois, jour, heure, minute, seconde);
+                verificationDate = (dateDebut < dateFin);
+            }
+            
 
             // Appeler la méthode calculerQualiteAir
             cout << "Affichage des resultats"<<endl;

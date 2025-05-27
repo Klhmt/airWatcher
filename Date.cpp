@@ -198,11 +198,12 @@ bool Date::lireDate(int &jour, int &mois, int &annee)
 
     while (true)
     {
-        getline(cin, date);
+        
+        getline(cin >> ws, date);
 
         if (!regex_match(date, match, formatStrict))
         {
-            cout << "Erreur, veuillez entrer une date valide." << endl;
+            cout << "Erreur, veuillez entrer une date valide : ";
             continue;
         }
 
@@ -214,7 +215,7 @@ bool Date::lireDate(int &jour, int &mois, int &annee)
         // Vérification de la validité de la date
         if (mois < 1 || mois > 12 || jour < 1)
         {
-            cout << "Erreur, veuillez entrer une date valide." << endl;
+            cout << "Erreur, veuillez entrer une date valide : ";
             continue;
         }
 
@@ -224,7 +225,7 @@ bool Date::lireDate(int &jour, int &mois, int &annee)
         // Si le nombre de jours est supérieur au nombre de jours maximum du mois
         if (jour > joursParMois[mois - 1])
         {
-            cout << "Erreur, veuillez entrer une date valide." << endl;
+            cout << "Erreur, veuillez entrer une date valide : ";
             continue;
         }
         break;
@@ -245,11 +246,11 @@ bool Date::lireHeure(int &heure, int &minute, int &seconde)
 
     while (true)
     {
-        getline(cin, heureStr);
+        getline(cin >> ws, heureStr);
 
         if (!regex_match(heureStr, match, formatStrict))
         {
-            cout << "Erreur, veuillez entrer une heure valide." << endl;
+            cout << "Erreur, veuillez entrer une heure valide : ";
             continue;
         }
 
@@ -259,13 +260,13 @@ bool Date::lireHeure(int &heure, int &minute, int &seconde)
 
         if (heure < 0 || heure > 23)
         {
-            cout << "Erreur, veuillez entrer une heure valide." << endl;
+            cout << "Erreur, veuillez entrer une heure valide : ";
             continue;
         }
 
         if (minute < 0 || minute > 59)
         {
-            cout << "Erreur, veuillez entrer une heure valide." << endl;
+            cout << "Erreur, veuillez entrer une heure valide : ";
             continue;
         }
 
@@ -274,3 +275,5 @@ bool Date::lireHeure(int &heure, int &minute, int &seconde)
 
     return true;
 }  //----- Fin de lireHeure
+
+

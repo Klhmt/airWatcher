@@ -14,7 +14,6 @@ TEST_CASE("Testing data")
     Service service;
     Date date;
 
-
     
     SUBCASE("Chargement des Provider & Aircleaners")
     {
@@ -51,7 +50,8 @@ TEST_CASE("Testing data")
     }
 
 
-//     SUBCASE("calculer le qualiter d'un capteur")
+
+//     SUBCASE("calculer la qualite d'un capteur")
 //     {
 //         service.data.loadMeasurements("./dataset/measurements_test.csv");
         

@@ -6,7 +6,8 @@
     "xtree": "cpp",
     "ostream": "cpp",
     "utility": "cpp",
-    "iosfwd": "cpp"
+    "iosfwd": "cpp",
+    "xstring": "cpp"
 }
 
 }

@@ -1,5 +1,5 @@
 ./dataset/providers.csv
-./dataset/cleaner.csv
+./dataset/cleaners.csv
 ./dataset/users.csv
 ./dataset/sensors.csv
 ./dataset/fiabilite_test.csv

@@ -19,6 +19,9 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "Data.h"
+#include <algorithm>
+
+
 
 //------------------------------------------------------------- Constantes
 
@@ -32,6 +35,13 @@ using namespace std;
 //} //----- Fin de Méthode
 
 
+string trim(const string& str) {
+    // use to trim the redundancy in the buffer when we read a path
+    string result = str;
+    result.erase(result.find_last_not_of(" \r\n") + 1);  // Trim right side
+    result.erase(0, result.find_first_not_of(" \r\n"));  // Trim left side
+    return result;
+}
 
 bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath)
 {
@@ -387,9 +397,9 @@ Data::Data (const string& fileGroupePath )
     }
 
     if (lines.size() >= 5) {
-        this->loadProviderAndAirWatcher(lines[0], lines[1]);
-        this->loadPrivateOwnersAndSensors(lines[2], lines[3]);
-        this->loadMeasurements(lines[4]);
+        this->loadProviderAndAirWatcher(trim(lines[0]), trim(lines[1]));
+        this->loadPrivateOwnersAndSensors(trim(lines[2]), trim(lines[3]));
+        this->loadMeasurements(trim(lines[4]));
     } else {
         cout << "Erreur : le fichier doit contenir 5 paths." << endl;
     }

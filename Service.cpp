@@ -140,12 +140,16 @@ Service::Service ( const Service & unAirCleaner )
 #endif
 } //----- Fin de Service (constructeur de copie)
 
+Service::Service( )
+{
+    
+}
 
-Service::Service ( )
+Service::Service (const string& filePath)
 // Algorithme :
 //
 {
-    data = Data("./dataset/_fileGroupOrigine.csv");
+    data = Data(filePath);
 #ifdef MAP
     cout << "Appel au constructeur de <Service>" << endl;
 #endif

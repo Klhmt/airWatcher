@@ -77,6 +77,8 @@ public:
     // Contrat :
     //
 
+    Service (const string& filePath);
+
     virtual ~Service ( );
     // Mode d'emploi :
     //

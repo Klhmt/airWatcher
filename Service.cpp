@@ -152,10 +152,10 @@ Service::Service( )
 }
 
 Service::Service (const string& filePath)
+    : data(filePath)
 // Algorithme :
 //
 {
-    data = Data(filePath);
 #ifdef MAP
     cout << "Appel au constructeur de <Service>" << endl;
 #endif

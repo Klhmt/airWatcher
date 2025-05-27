@@ -64,7 +64,32 @@ int Service::determinerFiabiliteCapteur(string sensorId, float radius, float eca
 
 int Service::calculerQualiterAir(float lat, float lon, float radius, Date start, Date end)
 {
+    // Récupère les capteurs proches dans le rayon autour du point (lat, lon)
+    vector<Sensor*> capteurs = capteursProches(lat, lon, radius);
+    
+    // Si aucun capteur trouvé, on retourne une erreur
+    if (capteurs.empty()) return -1;
 
+    float totalQualite = 0;
+    int capteurCount = 0;
+
+    // Parcours chaque capteur pour calculer sa qualité d’air individuelle
+    for (Sensor* capteur : capteurs)
+    {
+        int qualite = calculerQualiterParCapteur(capteur, start, end);
+        
+        // On ne prend en compte que les capteurs valides (qualité non -1)
+        if (qualite != -1) {
+            totalQualite += qualite;
+            capteurCount++;
+        }
+    }
+
+    // Si aucun capteur valide, on retourne une erreur
+    if (capteurCount == 0) return -1;
+
+    // Moyenne des indices de qualité des capteurs
+    return static_cast<int>(totalQualite / capteurCount);
 }
 
 
@@ -152,7 +177,80 @@ vector<Sensor*> Service::capteursProches(float lat, float lon, float radius)
     return listCapteurProche;
 }
 
+int Service::convertirEnIndiceATMO(const std::string& pollutant, float value)
+{
+    struct Seuil { float min, max; };
+    std::unordered_map<std::string, std::vector<Seuil>> seuils = {
+        {"O3", {{0,29},{30,54},{55,79},{80,104},{105,129},{130,149},{150,179},{180,209},{210,239},{240,1e6}}},
+        {"SO2", {{0,39},{40,79},{80,119},{120,159},{160,199},{200,249},{250,299},{300,399},{400,499},{500,1e6}}},
+        {"NO2", {{0,29},{30,54},{55,84},{85,109},{110,134},{135,164},{165,199},{200,274},{275,399},{400,1e6}}},
+        {"PM10", {{0,6},{7,13},{14,20},{21,27},{28,34},{35,41},{42,49},{50,64},{65,79},{80,1e6}}}
+    };
+
+    const std::vector<Seuil>& seuilsPolluant = seuils[pollutant];
+
+    for (int i = 0; i < seuilsPolluant.size(); ++i)
+    {
+        if (value >= seuilsPolluant[i].min && value <= seuilsPolluant[i].max)
+            return i + 1; // L’indice ATMO commence à 1
+    }
+
+    return -1; // Valeur hors bornes
+}
+
+
 int Service::calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop)
 {
+    // Récupère la map des mesures : sensorID → {Date → [Measurements]}
+    dataStructure mesures = data.getMeasurements();
+    dataStructure::iterator it = mesures.find(sensor->getSensorId());
+    
+    // Si le capteur n'a pas de mesure, on retourne une erreur
+    if (it == mesures.end()) return -1;
 
+    map<Date, vector<Measurement*>> mesuresCapteur = it->second;
+
+    // Regrouper les mesures par type de polluant
+    unordered_map<string, vector<float>> mesuresParPolluant;
+    for (const auto& pair : mesuresCapteur)
+    {
+        // Ne considérer que les dates comprises entre start et stop
+        if (pair.first < start || pair.first > stop) continue;
+
+        for (Measurement* mesure : pair.second)
+        {
+            mesuresParPolluant[mesure->getAttribute()].push_back(mesure->getValue());
+        }
+    }
+
+    // Aucun polluant mesuré sur la période
+    if (mesuresParPolluant.empty()) return -1;
+
+    float sommeIndices = 0;
+int nbPolluants = 0;
+
+// Pour chaque polluant mesuré
+for (const std::pair<const std::string, std::vector<float>>& pair : mesuresParPolluant)
+{
+    const std::string& attr = pair.first;
+    const std::vector<float>& valeurs = pair.second;
+
+    // Calcul de la moyenne des mesures pour ce polluant
+    float sommeMesures = 0;
+    for (float v : valeurs) sommeMesures += v;
+    float moyenne = sommeMesures / valeurs.size();
+
+    // Conversion de la moyenne en indice ATMO
+    int indice = convertirEnIndiceATMO(attr, moyenne);
+
+    // Ajouter à la somme des indices
+    if (indice != -1) {
+        sommeIndices += indice;
+        nbPolluants++;
+    }
+}
+
+// Retourne la moyenne des indices ATMO
+if (nbPolluants == 0) return -1; // ou -1.f
+return sommeIndices / nbPolluants;
 }

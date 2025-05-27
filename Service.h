@@ -40,6 +40,8 @@ public:
     //
     // Contrat :
     //
+    int convertirEnIndiceATMO(const std::string& pollutant, float value);
+
     int determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax, Date debut, Date fin);
 
     int calculerQualiterAir(float lat, float lon, float radius, Date start, Date end);

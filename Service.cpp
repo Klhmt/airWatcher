@@ -177,17 +177,17 @@ vector<Sensor*> Service::capteursProches(float lat, float lon, float radius)
     return listCapteurProche;
 }
 
-int Service::convertirEnIndiceATMO(const std::string& pollutant, float value)
+int Service::convertirEnIndiceATMO(const string& pollutant, float value)
 {
     struct Seuil { float min, max; };
-    std::unordered_map<std::string, std::vector<Seuil>> seuils = {
+    unordered_map<string, vector<Seuil>> seuils = {
         {"O3", {{0,29},{30,54},{55,79},{80,104},{105,129},{130,149},{150,179},{180,209},{210,239},{240,1e6}}},
         {"SO2", {{0,39},{40,79},{80,119},{120,159},{160,199},{200,249},{250,299},{300,399},{400,499},{500,1e6}}},
         {"NO2", {{0,29},{30,54},{55,84},{85,109},{110,134},{135,164},{165,199},{200,274},{275,399},{400,1e6}}},
         {"PM10", {{0,6},{7,13},{14,20},{21,27},{28,34},{35,41},{42,49},{50,64},{65,79},{80,1e6}}}
     };
 
-    const std::vector<Seuil>& seuilsPolluant = seuils[pollutant];
+    const vector<Seuil>& seuilsPolluant = seuils[pollutant];
 
     for (int i = 0; i < seuilsPolluant.size(); ++i)
     {
@@ -195,7 +195,7 @@ int Service::convertirEnIndiceATMO(const std::string& pollutant, float value)
             return i + 1; // L’indice ATMO commence à 1
     }
 
-    return -1; // Valeur hors bornes
+    return -1; // Valeur hors bornes, ou pas de polluant correspondant
 }
 
 
@@ -210,47 +210,47 @@ int Service::calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop)
 
     map<Date, vector<Measurement*>> mesuresCapteur = it->second;
 
-    // Regrouper les mesures par type de polluant
+    // Regrouper les mesures par type de polluant : nom_polluant : [mesures]
     unordered_map<string, vector<float>> mesuresParPolluant;
-    for (const auto& pair : mesuresCapteur)
-    {
-        // Ne considérer que les dates comprises entre start et stop
-        if (pair.first < start || pair.first > stop) continue;
+    
+    map<Date, vector<Measurement*>>::iterator itStart = mesuresCapteur.lower_bound(start);
+    map<Date, vector<Measurement*>>::iterator itEnd = mesuresCapteur.upper_bound(stop);
 
-        for (Measurement* mesure : pair.second)
+    // On utilise le fait que la map soit ordonnée
+    for (map<Date, vector<Measurement*>>::iterator it = itStart; it != itEnd; ++it) {
+        
+        for (Measurement* mesure : it->second)
         {
             mesuresParPolluant[mesure->getAttribute()].push_back(mesure->getValue());
         }
+        
     }
 
-    // Aucun polluant mesuré sur la période
+    // Aucune mesure sur la période
     if (mesuresParPolluant.empty()) return -1;
 
-    float sommeIndices = 0;
-int nbPolluants = 0;
+    int indiceATMO = -1;
 
-// Pour chaque polluant mesuré
-for (const std::pair<const std::string, std::vector<float>>& pair : mesuresParPolluant)
-{
-    const std::string& attr = pair.first;
-    const std::vector<float>& valeurs = pair.second;
+    // Pour chaque polluant mesuré
+    for (const pair<const string, vector<float>>& pair : mesuresParPolluant)
+    {
+        const string& attr = pair.first;
+        const vector<float>& valeurs = pair.second;
 
-    // Calcul de la moyenne des mesures pour ce polluant
-    float sommeMesures = 0;
-    for (float v : valeurs) sommeMesures += v;
-    float moyenne = sommeMesures / valeurs.size();
+        // Calcul de la moyenne des mesures pour ce polluant
+        float sommeMesures = 0;
+        for (float v : valeurs) sommeMesures += v;
+        float moyenne = sommeMesures / valeurs.size();
 
-    // Conversion de la moyenne en indice ATMO
-    int indice = convertirEnIndiceATMO(attr, moyenne);
+        // Conversion de la moyenne en indice ATMO
+        int indice = convertirEnIndiceATMO(attr, moyenne);
 
-    // Ajouter à la somme des indices
-    if (indice != -1) {
-        sommeIndices += indice;
-        nbPolluants++;
+        // On garde l'indice max
+        if (indice > indiceATMO)
+        {
+            indiceATMO = indice;
+        }
     }
-}
 
-// Retourne la moyenne des indices ATMO
-if (nbPolluants == 0) return -1; // ou -1.f
-return sommeIndices / nbPolluants;
+    return indiceATMO;
 }

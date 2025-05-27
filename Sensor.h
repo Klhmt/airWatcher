@@ -15,7 +15,6 @@
 #include <string>
 #include "PrivateOwner.h"
 
-typedef unordered_map<string, map<Date, vector<Measurement*>>> dataStructure;
 
 using namespace std;
 

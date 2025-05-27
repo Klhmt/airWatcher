@@ -198,7 +198,6 @@ bool Date::lireDate(int &jour, int &mois, int &annee)
 
     while (true)
     {
-        cout << "Veuillez entrer la date dans ce format (jj/mm/yyyy) : ";
         getline(cin, date);
 
         if (!regex_match(date, match, formatStrict))
@@ -246,7 +245,6 @@ bool Date::lireHeure(int &heure, int &minute, int &seconde)
 
     while (true)
     {
-        cout << "Veuillez entrer l'heure dans ce format (hh:mm) : ";
         getline(cin, heureStr);
 
         if (!regex_match(heureStr, match, formatStrict))

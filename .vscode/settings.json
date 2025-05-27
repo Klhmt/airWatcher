@@ -1,8 +1,10 @@
 {
-    "files.associations": {
-        "string": "cpp",
-        "unordered_map": "cpp",
-        "vector": "cpp",
-        "xtree": "cpp"
-    }
+   "files.associations": {
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "vector": "cpp",
+    "xtree": "cpp",
+    "ostream": "cpp"
+}
+
 }

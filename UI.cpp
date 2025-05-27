@@ -12,6 +12,8 @@
 
 //------------------------------------------------------ Include personnel
 #include "UI.h"
+#include "Date.h"
+
 
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
@@ -91,6 +93,12 @@ void UI::application()
 // Algorithme :
 //
 {
+    Date date;
+    int jour, mois, annee;
+    int heure, minute, seconde;
+
+    int latitude, longitude, rayon;
+
     int choix = 0;
     cout << "-------------------------------------------------" << endl;
     cout << "Bienvenue dans l'application AirWatcher" << endl;
@@ -102,13 +110,35 @@ void UI::application()
     switch (choix)
     {
         case 1:
-            cout << "Appel Methode determinerFiabiliteCapteur" << endl;
-            // Appeler la méthode determinerFiabiliteCapteur
+            cout << "Veuillez entrer le numero du capteur : ";
+            // Appel méthode determinerFiabiliteCapteur
+
             break;
 
         case 2:
-            cout << "Appel Methode calculerQualiteAir" << endl;
+            cout << "Veuillez entrer la latitude : ";
+            cin >> latitude;
+
+            cout << "Veuillez entrer la longitude : ";
+            cin >> longitude;
+
+            cout << "Veuillez entrer le rayon autour de ce point : ";
+            cin >> rayon;
+
+            cout << "Veuillez entrer la date de debut (jj/mm/yyyy) : "; 
+            date.lireDate(jour, mois, annee);
+
+            cout << "Veuillez entrer l'heure de debut (hh:mm) : ";
+            date.lireHeure(heure, minute, seconde);
+
+            cout << "Veuillez entrer la date de fin (jj/mm/yyyy) : ";
+            date.lireDate(jour, mois, annee);
+
+            cout << "Veuillez entrer l'heure de fin (hh:mm) : ";
+            date.lireHeure(heure, minute, seconde);
+
             // Appeler la méthode calculerQualiteAir
+            cout << "Affichage des resultats"<<endl;
             break;
 
         case 3:

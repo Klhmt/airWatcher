@@ -21,20 +21,19 @@ Date::Date()
 // Algorithme :
 //
 {
-    #ifdef MAP
+#ifdef MAP
     cout << "Appel au constructeur par défaut de <Date>" << endl;
-    #endif
+#endif
 } //----- Fin du constructeur par défaut
-
 
 //-------------------------------------------- Constructeur avec paramètres
 Date::Date(int annee, int mois, int jour, int heure, int minute, int seconde)
 // Algorithme :
 //
 {
-    #ifdef MAP
+#ifdef MAP
     cout << "Appel au constructeur avec paramètres de <Date>" << endl;
-    #endif
+#endif
 
     this->annee = annee;
     this->mois = mois;
@@ -45,7 +44,7 @@ Date::Date(int annee, int mois, int jour, int heure, int minute, int seconde)
 
 } //----- Fin du constructeur avec paramètres
 
-Date::Date ( const Date & unData )
+Date::Date(const Date &unData)
 {
     annee = unData.annee;
     mois = unData.mois;
@@ -60,31 +59,30 @@ Date::~Date()
 // Algorithme :
 //
 {
-    #ifdef MAP
+#ifdef MAP
     cout << "Appel au destructeur de <Date>" << endl;
-    #endif
+#endif
 
 } //----- Fin du destructeur
-
 
 //-------------------------------------------- Getters
 int Date::getAnnee() const
 // Algorithme :
-// 
+//
 {
     return annee;
 } //----- Fin getter année
 
 int Date::getMois() const
-// Algorithme : 
-// 
+// Algorithme :
+//
 {
     return mois;
 } //----- Fin getter mois
 
 int Date::getJour() const
 // Algorithme :
-// 
+//
 {
     return jour;
 } //----- Fin getter jour
@@ -105,7 +103,7 @@ int Date::getMinute() const
 
 int Date::getSeconde() const
 // Algorithme :
-// 
+//
 {
     return seconde;
 } //----- Fin getter seconde
@@ -113,42 +111,42 @@ int Date::getSeconde() const
 //-------------------------------------------- Setters
 void Date::setAnnee(int annee)
 // Algorithme :
-// 
+//
 {
     this->annee = annee;
 } //----- Fin setter année
 
 void Date::setMois(int mois)
 // Algorithme :
-// 
+//
 {
     this->mois = mois;
 } //----- Fin setter mois
 
 void Date::setJour(int jour)
 // Algorithme :
-// 
+//
 {
     this->jour = jour;
 } //----- Fin setter jour
 
 void Date::setHeure(int heure)
 // Algorithme :
-// 
+//
 {
     this->heure = heure;
 } //----- Fin setter heure
 
 void Date::setMinute(int minute)
 // Algorithme :
-// 
+//
 {
     this->minute = minute;
 } //----- Fin setter minute
 
 void Date::setSeconde(int seconde)
 // Algorithme :
-// 
+//
 {
     this->seconde = seconde;
 } //----- Fin setter seconde
@@ -156,9 +154,9 @@ void Date::setSeconde(int seconde)
 //-------------------------------------------- Autres méthodes
 
 // Surcharge de l'opérateur << pour l'affichage de la date
-ostream& operator<<(ostream& os, const Date& date)
-// Algorithme : 
-// 
+ostream &operator<<(ostream &os, const Date &date)
+// Algorithme :
+//
 {
     os << date.getAnnee() << "-" << date.getMois() << "-" << date.getJour() << " "
        << date.getHeure() << ":" << date.getMinute() << ":" << date.getSeconde();
@@ -166,54 +164,115 @@ ostream& operator<<(ostream& os, const Date& date)
 } //----- Fin de l'opérateur <<
 
 // Surcharge de l'opérateur < pour pouvoir utiliser Date dans une map
-bool operator<(const Date& d1, const Date& d2)
+bool operator<(const Date &d1, const Date &d2)
 {
-    if (d1.annee != d2.annee) return d1.annee < d2.annee;
-    if (d1.mois != d2.mois) return d1.mois < d2.mois;
-    if (d1.jour != d2.jour) return d1.jour < d2.jour;
-    if (d1.heure != d2.heure) return d1.heure < d2.heure;
-    if (d1.minute != d2.minute) return d1.minute < d2.minute;
+    if (d1.annee != d2.annee)
+        return d1.annee < d2.annee;
+    if (d1.mois != d2.mois)
+        return d1.mois < d2.mois;
+    if (d1.jour != d2.jour)
+        return d1.jour < d2.jour;
+    if (d1.heure != d2.heure)
+        return d1.heure < d2.heure;
+    if (d1.minute != d2.minute)
+        return d1.minute < d2.minute;
     return d1.seconde < d2.seconde;
 }
 
-bool Date::operator == ( const Date & unDate )
+bool Date::operator==(const Date &unDate)
 // Algorithme :
 //
 {
-    return (this->annee == unDate.annee)&&(this->mois == unDate.mois)&&(this->jour == unDate.jour)&&(this->heure == unDate.heure)&&(this->minute == unDate.minute);
+    return (this->annee == unDate.annee) && (this->mois == unDate.mois) && (this->jour == unDate.jour) && (this->heure == unDate.heure) && (this->minute == unDate.minute);
 } //----- Fin de operator =
 
 bool Date::lireDate(int &jour, int &mois, int &annee)
 // Algorithme :
-// 
+//
 {
-   string date;
+    string date;
+
+    // Format de date attendu : jj/mm/yyyy
     regex formatStrict(R"(^\s*(\d{2})/(\d{2})/(\d{4})\s*$)");
     smatch match;
 
-    cout << "Veuillez entrer la date (jj/mm/yyyy) : ";
-    getline(cin, date);
-
-    if (!regex_match(date, match, formatStrict))
+    while (true)
     {
-        return false; // format non reconnu
+        cout << "Veuillez entrer la date dans ce format (jj/mm/yyyy) : ";
+        getline(cin, date);
+
+        if (!regex_match(date, match, formatStrict))
+        {
+            cout << "Erreur, veuillez entrer une date valide." << endl;
+            continue;
+        }
+
+        // Extraction des valeurs de jour, mois et année
+        jour = stoi(match[1]);
+        mois = stoi(match[2]);
+        annee = stoi(match[3]);
+
+        // Vérification de la validité de la date
+        if (mois < 1 || mois > 12 || jour < 1)
+        {
+            cout << "Erreur, veuillez entrer une date valide." << endl;
+            continue;
+        }
+
+        // Nombre de jours maximum par mois
+        int joursParMois[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+        // Si le nombre de jours est supérieur au nombre de jours maximum du mois
+        if (jour > joursParMois[mois - 1])
+        {
+            cout << "Erreur, veuillez entrer une date valide." << endl;
+            continue;
+        }
+        break;
     }
-
-    jour = stoi(match[1]);
-    mois = stoi(match[2]);
-    annee = stoi(match[3]);
-
-    // Vérification de la validité de la date
-    if (mois < 1 || mois > 12 || jour < 1)
-        return false;
-
-    // Jours max par mois
-    int joursParMois[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-
-    if (jour > joursParMois[mois - 1])
-        return false;
 
     return true;
 
 } //----- Fin de lireDate
+
+
+bool Date::lireHeure(int &heure, int &minute, int &seconde)
+// Algorithme :
+//
+{
+    string heureStr;
+    regex formatStrict(R"(^\s*(\d{2}):(\d{2})\s*$)");
+    smatch match;
+
+    while (true)
+    {
+        cout << "Veuillez entrer l'heure dans ce format (hh:mm) : ";
+        getline(cin, heureStr);
+
+        if (!regex_match(heureStr, match, formatStrict))
+        {
+            cout << "Erreur, veuillez entrer une heure valide." << endl;
+            continue;
+        }
+
+        heure = stoi(match[1]);
+        minute = stoi(match[2]);
+        seconde = 0; // valeur à 0 par défaut
+
+        if (heure < 0 || heure > 23)
+        {
+            cout << "Erreur, veuillez entrer une heure valide." << endl;
+            continue;
+        }
+
+        if (minute < 0 || minute > 59)
+        {
+            cout << "Erreur, veuillez entrer une heure valide." << endl;
+            continue;
+        }
+
+        break; 
+    }
+
+    return true;
+}  //----- Fin de lireHeure

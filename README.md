@@ -2,21 +2,27 @@
 # Auteurs : MARNAS Léo, JACQUIER Clément, VANNESTE Nathan, TRAN Bao Huy
 AirWatcher Software Engineering Project 
 
-# Installation et Compilation
+# Installation
 ``` bash
 git clone https://github.com/Klhmt/airWatcher.git
 cd airWatcher
+```
+
+# Compilation
+``` bash
 make
 ```
 
 # Lancement de l'application
+```bash
 ./AirWatcher
+```
 
 L'utilisateur est ensuite amené à choisir son type de profil ou bien quitter l'application
 1. Agence Gouvernementale
 2. Fournisseur
 3. Particulier
-3. Quitter l'application
+4. Quitter l'application
 
 Une fois le profil de l'utilisateur selectionnée, deux fonctionnalité principales sont proposées
 1.  Déterminer la fiabilité d'un capteur

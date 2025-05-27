@@ -97,7 +97,7 @@ void UI::application()
     int jour, mois, annee;
     int heure, minute, seconde;
 
-    int latitude, longitude, rayon;
+    float latitude, longitude, rayon;
 
     bool verificationDate = false;
 
@@ -127,6 +127,12 @@ void UI::application()
             cout << "Veuillez entrer le rayon autour de ce point : ";
             cin >> rayon;
 
+            while (rayon <= 0)
+            {
+                cout << "Le rayon doit etre superieur a 0, veuillez reessayer : ";
+                cin >> rayon;
+            }
+
             cout << "Veuillez entrer la date de debut (jj/mm/yyyy) : "; 
             date.lireDate(jour, mois, annee);
 
@@ -152,7 +158,7 @@ void UI::application()
                 
                 cout << "Veuillez entrer l'heure de fin (hh:mm) : ";
                 date.lireHeure(heure, minute, seconde);
-                
+
                 dateFin = Date(annee, mois, jour, heure, minute, seconde);
                 verificationDate = (dateDebut < dateFin);
             }

@@ -175,3 +175,10 @@ bool operator<(const Date& d1, const Date& d2)
     if (d1.minute != d2.minute) return d1.minute < d2.minute;
     return d1.seconde < d2.seconde;
 }
+
+bool Date::operator == ( const Date & unDate )
+// Algorithme :
+//
+{
+    return (this->annee == unDate.annee)&&(this->mois == unDate.mois)&&(this->jour == unDate.jour)&&(this->heure == unDate.heure)&&(this->minute == unDate.minute);
+} //----- Fin de operator =

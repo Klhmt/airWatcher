@@ -113,7 +113,7 @@ public:
 
     Data ( );
 
-    Data (string path);
+    Data (const string& fileGroupePath );
 
     // Destructor for the Data class.
     // This destructor is responsible for deallocating all dynamically allocated

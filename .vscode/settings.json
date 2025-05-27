@@ -4,7 +4,9 @@
     "unordered_map": "cpp",
     "vector": "cpp",
     "xtree": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "utility": "cpp",
+    "iosfwd": "cpp"
 }
 
 }

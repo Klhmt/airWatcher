@@ -361,14 +361,39 @@ Data::Data ( )
 } //----- Fin de Data
 
 
-Data::Data ( string path )
+Data::Data (const string& fileGroupePath )
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de <Data>" << endl;
 #endif
-    baseFolderPath = path;
+    ifstream file(fileGroupePath);
+    if (!file.is_open()) {
+        cout << "Erreur : impossible d'ouvrir le fichier " << fileGroupePath << endl;
+        return;
+    }
+    // file groupe contient les paths suivi ces odres : 
+    // 1. ./dataset/providers.csv
+    // 2. ./dataset/cleaners.csv
+    // 3. ./dataset/users.csv
+    // 4. ./dataset/sensors.csv
+    // 5. ./dataset/mesurements.csv ou mesurements_tests.csv ....
+
+    vector<string> lines;
+    string line;
+    while (getline(file, line)) {
+        lines.push_back(line);
+    }
+
+    if (lines.size() >= 5) {
+        this->loadProviderAndAirWatcher(lines[0], lines[1]);
+        this->loadPrivateOwnersAndSensors(lines[2], lines[3]);
+        this->loadMeasurements(lines[4]);
+    } else {
+        cout << "Erreur : le fichier doit contenir 5 paths." << endl;
+    }
+
 } //----- Fin de Data
 
 

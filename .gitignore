@@ -4,3 +4,4 @@
 # Ignorer l'exécutable et l'exécutable test
 prog
 test
+.vscode/settings.json

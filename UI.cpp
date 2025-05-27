@@ -12,6 +12,8 @@
 
 //------------------------------------------------------ Include personnel
 #include "UI.h"
+#include "Date.h"
+
 
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
@@ -91,34 +93,77 @@ void UI::application()
 // Algorithme :
 //
 {
+    Date date, dateDebut, dateFin;
+    int jour, mois, annee;
+    int heure, minute, seconde;
+
+    int latitude, longitude, rayon;
+
+    bool verificationDate = false;
+
     int choix = 0;
     cout << "-------------------------------------------------" << endl;
     cout << "Bienvenue dans l'application AirWatcher" << endl;
-    cout << "1. Methode1" << endl;
-    cout << "2. Methode2" << endl;
-    cout << "3. Methode3" << endl;
-    cout << "4. Quitter l'application" << endl;
+    cout << "1. Determiner la fiabilite d'un capteur" << endl;
+    cout << "2. Calculer la qualite de l'air" << endl;
+    cout << "3. Quitter l'application" << endl;
     cout << "Veuillez entrer votre choix : ";
     cin >> choix;
     switch (choix)
     {
         case 1:
-            cout << "Appel Methode 1" << endl;
-            // Appeler la méthode 1
+            cout << "Veuillez entrer le numero du capteur : ";
+            // Appel méthode determinerFiabiliteCapteur
+
             break;
 
         case 2:
-            cout << "Appel Methode 2" << endl;
-            // Appeler la méthode 2
+            cout << "Veuillez entrer la latitude : ";
+            cin >> latitude;
+
+            cout << "Veuillez entrer la longitude : ";
+            cin >> longitude;
+
+            cout << "Veuillez entrer le rayon autour de ce point : ";
+            cin >> rayon;
+
+            cout << "Veuillez entrer la date de debut (jj/mm/yyyy) : "; 
+            date.lireDate(jour, mois, annee);
+
+            cout << "Veuillez entrer l'heure de debut (hh:mm) : ";
+            date.lireHeure(heure, minute, seconde);
+
+            dateDebut = Date(annee, mois, jour, heure, minute, seconde);
+
+            cout << "Veuillez entrer la date de fin (jj/mm/yyyy) : ";
+            date.lireDate(jour, mois, annee);
+
+            cout << "Veuillez entrer l'heure de fin (hh:mm) : ";
+            date.lireHeure(heure, minute, seconde);
+
+            dateFin = Date(annee, mois, jour, heure, minute, seconde);
+
+            verificationDate = (dateDebut < dateFin);
+
+            while (!verificationDate)
+            {
+                cout << "Veuillez mettre une date de fin posterieure a la date de debut : " ;
+                date.lireDate(jour, mois, annee);
+                
+                cout << "Veuillez entrer l'heure de fin (hh:mm) : ";
+                date.lireHeure(heure, minute, seconde);
+                
+                dateFin = Date(annee, mois, jour, heure, minute, seconde);
+                verificationDate = (dateDebut < dateFin);
+            }
+            
+
+            // Appeler la méthode calculerQualiteAir
+            cout << "Affichage des resultats"<<endl;
             break;
 
         case 3:
-            cout << "Appel Methode 3" << endl;
-            // Appeler la méthode 3
-            break;
-
-        case 4:
-            cout << "Merci d'avoir utilise AirWatcher, au revoir !!!" << endl;
+            cout << "Merci d'avoir utilise l'application AirWatcher, au revoir et a bientot !!!" << endl;
             break;
 
         default:

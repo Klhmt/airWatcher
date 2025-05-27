@@ -167,7 +167,7 @@ vector<Sensor*> Service::capteursProches(float lat, float lon, float radius)
     vector<Sensor*> listCapteurProche;
     vector<Sensor*> allCapteur = data.getSensors();
 
-    for (Sensor* capteur : allCapteur)   /// Sensor& ou juste Sensor ????
+    for (Sensor* capteur : allCapteur)   
     {
         if (distance(lat,lon,capteur->getLatitude(),capteur->getLongitude()) < radius)
         {

@@ -61,6 +61,7 @@ string Sensor::getSensorId() const
     return sensorId;
 }
 
+
 float Sensor::getLatitude() const
 {
     return latitude;

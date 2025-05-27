@@ -3,7 +3,9 @@
 AirWatcher Software Engineering Project 
 
 # Installation
+``` bash
 git clone https://github.com/Klhmt/airWatcher.git
+```
 
 # Compilation
 make

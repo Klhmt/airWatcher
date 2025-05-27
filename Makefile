@@ -1,9 +1,9 @@
 CXX := g++
 CXXFLAGS := -Wall -Wextra -std=c++17 -g
 
-TARGET := prog
+TARGET := AirWatcher
 
-# Pour prog : tous les .cpp sauf test.cpp
+# Pour AirWatcher : tous les .cpp sauf test.cpp
 SRCS := $(filter-out test.cpp, $(wildcard *.cpp))
 OBJS := $(SRCS:.cpp=.o)
 

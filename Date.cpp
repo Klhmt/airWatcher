@@ -182,3 +182,38 @@ bool Date::operator == ( const Date & unDate )
 {
     return (this->annee == unDate.annee)&&(this->mois == unDate.mois)&&(this->jour == unDate.jour)&&(this->heure == unDate.heure)&&(this->minute == unDate.minute);
 } //----- Fin de operator =
+
+bool Date::lireDate(int &jour, int &mois, int &annee)
+// Algorithme :
+// 
+{
+   string date;
+    regex formatStrict(R"(^\s*(\d{2})/(\d{2})/(\d{4})\s*$)");
+    smatch match;
+
+    cout << "Veuillez entrer la date (jj/mm/yyyy) : ";
+    getline(cin, date);
+
+    if (!regex_match(date, match, formatStrict))
+    {
+        return false; // format non reconnu
+    }
+
+    jour = stoi(match[1]);
+    mois = stoi(match[2]);
+    annee = stoi(match[3]);
+
+    // Vérification de la validité de la date
+    if (mois < 1 || mois > 12 || jour < 1)
+        return false;
+
+    // Jours max par mois
+    int joursParMois[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+
+    if (jour > joursParMois[mois - 1])
+        return false;
+
+    return true;
+
+} //----- Fin de lireDate

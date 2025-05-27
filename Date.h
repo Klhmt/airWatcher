@@ -13,6 +13,8 @@
 //---------------------------------------------------------- Includes
 #include <iostream>
 #include <string>
+#include <regex>
+
 
 using namespace std;
 
@@ -64,7 +66,9 @@ class Date
     void setSeconde(int seconde);
 
     // Autres méthodes 
-   
+   bool lireDate(int &jour, int &mois, int &annee);
+   bool lireHeure(int &heure, int &minute, int &seconde);
+
     // Surcharge de l'opérateur << pour l'affichage de la date
     friend ostream& operator<<(ostream& os, const Date& date);
 

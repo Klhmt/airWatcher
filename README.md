@@ -4,13 +4,12 @@ AirWatcher Software Engineering Project
 
 # Installation
 git clone https://github.com/Klhmt/airWatcher.git
-cd airWatcher
 
 # Compilation
 make
 
 # Lancement de l'application
-./airwatcher
+./AirWatcher
 
 L'utilisateur est ensuite amené à choisir son type de profil ou bien quitter l'application
 1. Agence Gouvernementale

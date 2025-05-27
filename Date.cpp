@@ -179,12 +179,18 @@ bool operator<(const Date &d1, const Date &d2)
     return d1.seconde < d2.seconde;
 }
 
-bool Date::operator==(const Date &unDate)
+// Surcharge de l'opérateur == pour comparer deux dates
+bool operator==(const Date &d1, const Date &d2)
 // Algorithme :
 //
 {
-    return (this->annee == unDate.annee) && (this->mois == unDate.mois) && (this->jour == unDate.jour) && (this->heure == unDate.heure) && (this->minute == unDate.minute);
-} //----- Fin de operator =
+    return (d1.getAnnee() == d2.getAnnee() &&
+            d1.getMois() == d2.getMois() &&
+            d1.getJour() == d2.getJour() &&
+            d1.getHeure() == d2.getHeure() &&
+            d1.getMinute() == d2.getMinute() &&
+            d1.getSeconde() == d2.getSeconde());
+} //----- Fin de la surcharge de l'opérateur ==
 
 bool Date::lireDate(int &jour, int &mois, int &annee)
 // Algorithme :

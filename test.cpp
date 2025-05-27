@@ -4,12 +4,14 @@
 
 #include "Data.h"
 #include "Date.h"
+#include "Service.h"
 
 
 TEST_CASE("Testing data") 
 {
 
     Data data;
+    Service service;
     
     SUBCASE("Chargement des Provider & Aircleaners")
     {
@@ -33,4 +35,17 @@ TEST_CASE("Testing data")
         CHECK(data.getMeasurements()["Sensor64"].size() == 2);
         
     }
+
+//     SUBCASE("calculer le qualiter d'un capteur")
+//     {
+//         service.data.loadMeasurements("./dataset/measurements_test.csv");
+        
+//         CHECK(service.calculerQualiterAir(service.data.getSensors()) == 53.0625);
+//     }
+
+//     SUBCASE("Calculer la fiabilite d'un capteur")
+//     {
+
+//     }
+
 }

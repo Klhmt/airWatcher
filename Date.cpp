@@ -192,6 +192,22 @@ bool operator==(const Date &d1, const Date &d2)
             d1.getSeconde() == d2.getSeconde());
 } //----- Fin de la surcharge de l'opérateur ==
 
+bool operator>(const Date &d1, const Date &d2)
+{
+    if (d1.annee != d2.annee)
+        return d1.annee < d2.annee;
+    if (d1.mois != d2.mois)
+        return d1.mois < d2.mois;
+    if (d1.jour != d2.jour)
+        return d1.jour < d2.jour;
+    if (d1.heure != d2.heure)
+        return d1.heure < d2.heure;
+    if (d1.minute != d2.minute)
+        return d1.minute < d2.minute;
+    return d2.seconde < d1.seconde;
+}
+
+
 bool Date::lireDate(int &jour, int &mois, int &annee)
 // Algorithme :
 //

@@ -97,6 +97,8 @@ void UI::application()
     int jour, mois, annee;
     int heure, minute, seconde;
 
+    int numeroCapteur;
+
     float latitude, longitude, rayon;
 
     bool verificationDate = false;
@@ -113,6 +115,9 @@ void UI::application()
     {
         case 1:
             cout << "Veuillez entrer le numero du capteur : ";
+            cin >> numeroCapteur;
+
+            
             // Appel méthode determinerFiabiliteCapteur
 
             break;

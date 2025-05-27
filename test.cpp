@@ -12,6 +12,9 @@ TEST_CASE("Testing data")
 
     Data data;
     Service service;
+    Date date;
+
+
     
     SUBCASE("Chargement des Provider & Aircleaners")
     {
@@ -35,6 +38,18 @@ TEST_CASE("Testing data")
         CHECK(data.getMeasurements()["Sensor64"].size() == 2);
         
     }
+
+    SUBCASE("Test Surcharge Date")
+    {
+        Date date1(2023, 10, 1, 12, 0, 0);
+        Date date2(2023, 10, 1, 12, 0, 0);
+        Date date3(2023, 10, 2, 12, 0, 0);
+
+        CHECK(date1 == date2);
+        CHECK(date1 < date3);
+        CHECK(date3 > date1);
+    }
+
 
 //     SUBCASE("calculer le qualiter d'un capteur")
 //     {

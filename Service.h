@@ -40,7 +40,7 @@ public:
     //
     // Contrat :
     //
-    int convertirEnIndiceATMO(const std::string& pollutant, float value);
+    int convertirEnIndiceATMO(const string& pollutant, float value);
 
     int determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax, Date debut, Date fin);
 
@@ -55,7 +55,6 @@ public:
     void bannirCapteur(string sensorId);
 
     int consulterRecompense(string userName);
-
 
 //------------------------------------------------- Surcharge d'opérateurs
     Service & operator = ( const Service & unService );
@@ -98,9 +97,10 @@ protected:
 //----------------------------------------------------- Attributs protégés
 
 private:
-    //Methodes privees
+    // Methodes privees
     vector<Sensor*> capteursProches(float lat, float lon, float radius);
 
+    // Attributs prives
     Data data;
 
 

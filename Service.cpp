@@ -20,7 +20,7 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
 
-//une function distance:
+// une function distance:
 int distance(int x1, int y1, int x2, int y2) {
     return sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
 }
@@ -76,12 +76,15 @@ int Service::calculerQualiterAir(float lat, float lon, float radius, Date start,
     // Parcours chaque capteur pour calculer sa qualité d’air individuelle
     for (Sensor* capteur : capteurs)
     {
-        int qualite = calculerQualiterParCapteur(capteur, start, end);
-        
-        // On ne prend en compte que les capteurs valides (qualité non -1)
-        if (qualite != -1) {
-            totalQualite += qualite;
-            capteurCount++;
+        if (!capteur->getEstDefectueux())
+        {
+            int qualite = calculerQualiterParCapteur(capteur, start, end);
+            
+            // On ne prend en compte que les capteurs valides (qualité non -1)
+            if (qualite != -1) {
+                totalQualite += qualite;
+                capteurCount++;
+            }
         }
     }
 
@@ -212,7 +215,6 @@ int Service::convertirEnIndiceATMO(const string& pollutant, float value)
 
     return -1; // Valeur hors bornes, ou pas de polluant correspondant
 }
-
 
 int Service::calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop)
 {

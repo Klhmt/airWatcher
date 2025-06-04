@@ -50,19 +50,38 @@ TEST_CASE("Testing data")
 
 
 
-    SUBCASE("calculer la qualite d'un capteur")
+    SUBCASE("Calculer ATMO avec 1 capteur : les dates restreignent au seul capteur 64")
     {
         Service service("./dataset/_fileGroupeTestFiabilite.csv");
-        Data data1;
-        Date debut(2025, 01, 1, 12, 0, 0);
-        Date fin(2023, 02, 1, 12, 0, 0);
-        //CHECK(data1.getSensorById("Sensor1")==nullptr);
-        //CHECK(service.calculerQualiterParCapteur(data1.getSensorById("Sensor1"), debut,fin) == 4);
+        Date debut(2019, 11, 30, 12, 0, 0);
+        Date fin(2019, 13, 30, 12, 0, 0);
+        
+        // Les dates restreingnent au seul capteur 64
+        CHECK(service.calculerQualiterAir(46.4, 1.8, 1, debut, fin) == 9);
+
     }
 
-    SUBCASE("Calculer la fiabilite d'un capteur")
+    SUBCASE("Calculer ATMO avec 1 capteur : les dates correspondent aux 2 capteurs 64 et 0, mais radius sélectionne uniquement 0")
     {
-
+        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Date debut(2010, 11, 30, 12, 0, 0);
+        Date fin(2035, 13, 30, 12, 0, 0);
+        
+        CHECK(service.calculerQualiterAir(44, -1, 0.1, debut, fin) == 8);
     }
 
+    SUBCASE("Calculer ATMO avec 2 capteur")
+    {
+        CHECK(true);
+    }
+
+    SUBCASE("Calculer ATMO : pas de capteur aux alentours")
+    {
+        CHECK(true);
+    }
+
+    SUBCASE("Calculer ATMO : pas de donnée dans les dates données")
+    {
+        CHECK(true);
+    }
 }

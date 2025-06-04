@@ -20,11 +20,6 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
 
-// une function distance:
-int distance(int x1, int y1, int x2, int y2) {
-    return sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
-}
-
 
 //----------------------------------------------------- Méthodes publiques
 // type Service::Méthode ( liste des paramètres )
@@ -270,4 +265,21 @@ int Service::calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop)
     }
 
     return indiceATMO;
+}
+
+double Service::distance(float latitude1, float longitude1, float latitude2, float longitude2) {
+    const double R = 6371.0; // Earth radius in km
+    const double to_rad = M_PI / 180.0;
+
+    double phi1 = latitude1 * to_rad;
+    double phi2 = latitude2 * to_rad;
+    double d_phi = (latitude2 - latitude1) * to_rad;
+    double d_lambda = (longitude2 - longitude1) * to_rad;
+
+    double a = sin(d_phi / 2) * sin(d_phi / 2) +
+               cos(phi1) * cos(phi2) *
+               sin(d_lambda / 2) * sin(d_lambda / 2);
+    double c = 2 * asin(sqrt(a));
+
+    return R * c;
 }

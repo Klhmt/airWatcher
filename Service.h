@@ -19,6 +19,8 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <cmath>
+
 using namespace std;
 //------------------------------------------------------------- Constantes
 //------------------------------------------------------------------ Types
@@ -87,6 +89,8 @@ public:
     //
     
     int calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop);
+    vector<Sensor*> capteursProches(float lat, float lon, float radius);
+    double distance(float latitude1, float longitude1, float latitude2, float longitude2);
 
 
 //------------------------------------------------------------------ PRIVE
@@ -94,11 +98,12 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
     
+    
 //----------------------------------------------------- Attributs protégés
 
 private:
     // Methodes privees
-    vector<Sensor*> capteursProches(float lat, float lon, float radius);
+
 
     // Attributs prives
     Data data;

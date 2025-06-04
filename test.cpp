@@ -7,7 +7,7 @@
 #include "Service.h"
 
 
-TEST_CASE("Testing data") 
+TEST_CASE("Classe Data") 
 {
 
     Data data;
@@ -36,7 +36,10 @@ TEST_CASE("Testing data")
         CHECK(data.getMeasurements()["Sensor64"].size() == 2);
         
     }
+}
 
+TEST_CASE("Classe Date")
+{
     SUBCASE("Test Surcharge Date")
     {
         Date date1(2023, 10, 1, 12, 0, 0);
@@ -47,9 +50,10 @@ TEST_CASE("Testing data")
         CHECK(date1 < date3);
         CHECK(date3 > date1);
     }
+}
 
-
-
+TEST_CASE("Classe Service")
+{
     SUBCASE("Calculer ATMO avec 1 capteur : les dates restreignent au seul capteur 64")
     {
         Service service("./dataset/_fileGroupeTestFiabilite.csv");
@@ -83,5 +87,43 @@ TEST_CASE("Testing data")
     SUBCASE("Calculer ATMO : pas de donnée dans les dates données")
     {
         CHECK(true);
+    }
+
+    SUBCASE("Test méthode distance") 
+    {
+        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+        // Correspond to the distance between Sensor 16 and 31 -> 290.1 km with 1% error allowed
+        CHECK(s.distance(44.4, 3.2, 45.2, -0.3) == doctest::Approx(290.1).epsilon(0.01));
+    }
+
+    SUBCASE("Test méthode getCapteurProches")
+    {
+        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+        CHECK(s.capteursProches(44., -1., 1).size() == 1);
+
+        CHECK(s.capteursProches(49., -9., 1).size() == 0);
+        
+        CHECK(s.capteursProches(44., -1., 50).size() == 2);
+    }
+
+    SUBCASE("Test méthode vérifier existance par capteur")
+    {
+        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+
+        CHECK(s.verifierExistenceCapteur("Sensor3"));
+
+        CHECK(!s.verifierExistenceCapteur("Excellent project"));
+    }
+
+    SUBCASE("Test bannir sensor")
+    {
+        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+
+        // Get sensor0
+        Sensor * sensor = s.capteursProches(44., -1., 1)[0]; 
+        CHECK(!sensor->getEstDefectueux());
+        s.bannirCapteur("Sensor0");
+        CHECK(sensor->getEstDefectueux());
+
     }
 }

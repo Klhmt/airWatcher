@@ -1,5 +1,5 @@
 # airWatcher
-# Auteurs : MARNAS Léo, JACQUIER Clément, VANNESTE Nathan, TRAN Bao Huy
+# Auteurs : Binômes B3233 & B3225
 AirWatcher Software Engineering Project 
 
 # Installation

@@ -37,60 +37,90 @@ class Service
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    // type Méthode ( liste des paramètres );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+
+
+    // Converts a pollutant concentration value to the corresponding ATMO index level.
+    // Parameters:
+    // - pollutant: name of the pollutant ("O3", "SO2", "NO2", "PM10")
+    // - value: measured concentration of the pollutant
+    // Returns:
+    // - The ATMO index (1 to 10) corresponding to the concentration
+    // - Returns -1 if the pollutant is unknown or the value is out of defined bounds
+    // Thresholds are based on:
+    // https://fr.wikipedia.org/wiki/Indice_de_qualit%C3%A9_de_l%27air
     int convertirEnIndiceATMO(const string& pollutant, float value);
 
     int determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax, Date debut, Date fin);
 
+    // Calculates the average air quality index (ATMO) around a geographic point
+    // based on sensors within a specified radius and time range.
+    // Parameters:
+    // - lat, lon: coordinates of the reference point (in degrees)
+    // - radius: search radius in kilometers
+    // - start, end: date range for measurement consideration
+    // Returns:
+    // - Average ATMO index (rounded int) of valid sensors in the area
+    // - Returns -1 if no sensors found or no valid data in the period
     int calculerQualiterAir(float lat, float lon, float radius, Date start, Date end);
 
+    // Checks if a sensor with the given ID exists in the dataset.
+    // Parameters:
+    // - sensorId: ID of the sensor to check
+    // Returns:
+    // - true if the sensor exists, false otherwise
     bool verifierExistenceCapteur(string sensorId);
 
     vector<Measurement> observerImpactAir();
 
     unordered_map<Sensor*,float> indentifierCapteursSimilaires(string sensorId);
 
+    // Mark the sensor as unreliable. All the measurements of this sensor
+    // won't be used at all for the future ATMO calculations.
+    // Parameter:
+    // - sensorId: ID of the sensor to ban
     void bannirCapteur(string sensorId);
 
     int consulterRecompense(string userName);
 
+    // Calculates the ATMO index for a given sensor over a specified time range.
+    // Parameters:
+    // - sensor: pointer to the Sensor object
+    // - start, stop: date range for which to compute ATMO
+    // Returns:
+    // - The ATMO index based on the highest pollutant level measured. ATMO index is calculated using convertirEnIndiceATMO method.
+    // - Returns -1 if the sensor has no data or no measurements in the given period
+    int calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop);
+
+    // Returns a vector of pointers to Sensor objects located within a given radius (in kilometers)
+    // from the specified latitude and longitude.
+    // Parameters:
+    // - lat, lon: reference coordinates (in degrees)
+    // - radius: search radius (in kilometers)
+    // Uses the Haversine-based distance() function to compute distances.
+    vector<Sensor*> capteursProches(float lat, float lon, float radius);
+
+    // Calculates the distance in kilometers between two geographic coordinates
+    // using the Haversine formula.
+    // Parameters:
+    // - latitude1, longitude1: coordinates of the first point (in degrees)
+    // - latitude2, longitude2: coordinates of the second point (in degrees)
+    // Returns:
+    // - Distance in kilometers
+    double distance(float latitude1, float longitude1, float latitude2, float longitude2);
+
 //------------------------------------------------- Surcharge d'opérateurs
     Service & operator = ( const Service & unService );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
 
 //-------------------------------------------- Constructeurs - destructeur
     
     Service ( const Service & unService );
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
 
     Service (  );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
     Service (const string& filePath);
 
     virtual ~Service ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-    
-    int calculerQualiterParCapteur(Sensor* sensor, Date start, Date stop);
-    vector<Sensor*> capteursProches(float lat, float lon, float radius);
-    double distance(float latitude1, float longitude1, float latitude2, float longitude2);
 
 
 //------------------------------------------------------------------ PRIVE

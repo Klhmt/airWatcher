@@ -76,22 +76,37 @@ TEST_CASE("Classe Service")
 
     SUBCASE("Calculer ATMO avec 2 capteur")
     {
-        CHECK(true);
+        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Date debut(2010, 11, 30, 12, 0, 0);
+        Date fin(2035, 13, 30, 12, 0, 0);
+        
+        // Manual calculus : 3 ATMO measures from 2 sensors, 8, 9 => mean ~= 8.5 hence the expected result is 9 (std::round is rounding halfway cases away from zero)
+        // See https://en.cppreference.com/w/cpp/numeric/math/round
+        CHECK(service.calculerQualiterAir(44, -1, 400, debut, fin) == 9);
     }
 
     SUBCASE("Calculer ATMO : pas de capteur aux alentours")
     {
-        CHECK(true);
+        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Date debut(2010, 11, 30, 12, 0, 0);
+        Date fin(2035, 13, 30, 12, 0, 0);
+
+        CHECK(service.calculerQualiterAir(48, -1, 1, debut, fin) == -1);
     }
 
     SUBCASE("Calculer ATMO : pas de donnée dans les dates données")
     {
-        CHECK(true);
+        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Date debut(2001, 11, 30, 12, 0, 0);
+        Date fin(202, 13, 30, 12, 0, 0);
+        
+        CHECK(service.calculerQualiterAir(48, -1, 100000000, debut, fin) == -1);
     }
 
     SUBCASE("Test méthode distance") 
     {
         Service s("./dataset/_fileGroupeTestFiabilite.csv");
+        // Useful online calculator: https://calculator.academy/haversine-distance-calculator/
         // Correspond to the distance between Sensor 16 and 31 -> 290.1 km with 1% error allowed
         CHECK(s.distance(44.4, 3.2, 45.2, -0.3) == doctest::Approx(290.1).epsilon(0.01));
     }

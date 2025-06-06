@@ -87,7 +87,7 @@ int Service::calculerQualiterAir(float lat, float lon, float radius, Date start,
     if (capteurCount == 0) return -1;
 
     // Moyenne des indices de qualité des capteurs
-    return static_cast<int>(totalQualite / capteurCount);
+    return static_cast<int>(round(totalQualite / capteurCount));
 }
 
 

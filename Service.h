@@ -50,6 +50,15 @@ public:
     // https://fr.wikipedia.org/wiki/Indice_de_qualit%C3%A9_de_l%27air
     int convertirEnIndiceATMO(const string& pollutant, float value);
 
+    // Determines the reliability of a sensor over a given time period.
+    // Compares the sensor’s quality to that of its neighbors within a specified radius.
+    // Parameters:
+    //   sensorId - ID of the sensor to evaluate
+    //   radius - radius within which to consider neighboring sensors
+    //   ecartMax - maximum allowed deviation percentage for quality comparison
+    //   debut - start date of the evaluation period
+    //   fin - end date of the evaluation period
+    // Returns 0 on error or no data, 1 if reliable, and 2 if not reliable.
     int determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax, Date debut, Date fin);
 
     // Calculates the average air quality index (ATMO) around a geographic point
@@ -70,8 +79,16 @@ public:
     // - true if the sensor exists, false otherwise
     bool verifierExistenceCapteur(string sensorId);
 
+    // Returns a vector of measurements containing information about air purifiers (aircleaners)
+    // along with statistics computed from their data (e.g., average, min, max).
+    // Used to evaluate the impact of aircleaners on air quality.
+    // NOT IMPLEMENTED
     vector<Measurement> observerImpactAir();
 
+    // Returns an unordered map containing pointers to sensors similar to the given sensor,
+    // each associated with a similarity score (float). The sensors are ranked in descending order
+    // based on similarity using the ATMO index calculated over a defined period.
+    // NOT IMPLEMENTED
     unordered_map<Sensor*,float> indentifierCapteursSimilaires(string sensorId);
 
     // Mark the sensor as unreliable. All the measurements of this sensor
@@ -127,13 +144,11 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    
-    
+
 //----------------------------------------------------- Attributs protégés
 
 private:
     // Methodes privees
-
 
     // Attributs prives
     Data data;

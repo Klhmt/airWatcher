@@ -9,10 +9,7 @@
 
 TEST_CASE("Classe Data") 
 {
-
     Data data;
-    Date date;
-
     
     SUBCASE("Chargement des Provider & Aircleaners")
     {
@@ -54,7 +51,7 @@ TEST_CASE("Classe Date")
 
 TEST_CASE("Classe Service")
 {
-    SUBCASE("Calculer ATMO avec 1 capteur : les dates restreignent au seul capteur 64")
+    SUBCASE("Méthode calculerQualiterAir : calculer ATMO avec 1 capteur : les dates restreignent au seul capteur 64")
     {
         Service service("./dataset/_fileGroupeTestFiabilite.csv");
         Date debut(2019, 11, 30, 12, 0, 0);
@@ -65,7 +62,7 @@ TEST_CASE("Classe Service")
 
     }
 
-    SUBCASE("Calculer ATMO avec 1 capteur : les dates correspondent aux 2 capteurs 64 et 0, mais radius sélectionne uniquement 0")
+    SUBCASE("Méthode calculerQualiterAir : Calculer ATMO avec 1 capteur : les dates correspondent aux 2 capteurs 64 et 0, mais radius sélectionne uniquement 0")
     {
         Service service("./dataset/_fileGroupeTestFiabilite.csv");
         Date debut(2010, 11, 30, 12, 0, 0);
@@ -74,7 +71,7 @@ TEST_CASE("Classe Service")
         CHECK(service.calculerQualiterAir(44, -1, 0.1, debut, fin) == 8);
     }
 
-    SUBCASE("Calculer ATMO avec 2 capteur")
+    SUBCASE("Méthode calculerQualiterAir : Calculer ATMO avec 2 capteur")
     {
         Service service("./dataset/_fileGroupeTestFiabilite.csv");
         Date debut(2010, 11, 30, 12, 0, 0);
@@ -85,7 +82,7 @@ TEST_CASE("Classe Service")
         CHECK(service.calculerQualiterAir(44, -1, 400, debut, fin) == 9);
     }
 
-    SUBCASE("Calculer ATMO : pas de capteur aux alentours")
+    SUBCASE("Méthode calculerQualiterAir : pas de capteur aux alentours")
     {
         Service service("./dataset/_fileGroupeTestFiabilite.csv");
         Date debut(2010, 11, 30, 12, 0, 0);
@@ -94,7 +91,7 @@ TEST_CASE("Classe Service")
         CHECK(service.calculerQualiterAir(48, -1, 1, debut, fin) == -1);
     }
 
-    SUBCASE("Calculer ATMO : pas de donnée dans les dates données")
+    SUBCASE("Méthode calculerQualiterAir : pas de donnée dans les dates données")
     {
         Service service("./dataset/_fileGroupeTestFiabilite.csv");
         Date debut(2001, 11, 30, 12, 0, 0);
@@ -103,7 +100,7 @@ TEST_CASE("Classe Service")
         CHECK(service.calculerQualiterAir(48, -1, 100000000, debut, fin) == -1);
     }
 
-    SUBCASE("Test méthode distance") 
+    SUBCASE("Méthode distance") 
     {
         Service s("./dataset/_fileGroupeTestFiabilite.csv");
         // Useful online calculator: https://calculator.academy/haversine-distance-calculator/
@@ -111,7 +108,7 @@ TEST_CASE("Classe Service")
         CHECK(s.distance(44.4, 3.2, 45.2, -0.3) == doctest::Approx(290.1).epsilon(0.01));
     }
 
-    SUBCASE("Test méthode getCapteurProches")
+    SUBCASE("Méthode capteursProches")
     {
         Service s("./dataset/_fileGroupeTestFiabilite.csv");
         CHECK(s.capteursProches(44., -1., 1).size() == 1);
@@ -121,7 +118,7 @@ TEST_CASE("Classe Service")
         CHECK(s.capteursProches(44., -1., 50).size() == 2);
     }
 
-    SUBCASE("Test méthode vérifier existance par capteur")
+    SUBCASE("Méthode vérifierExistanceCapteur")
     {
         Service s("./dataset/_fileGroupeTestFiabilite.csv");
 
@@ -130,7 +127,7 @@ TEST_CASE("Classe Service")
         CHECK(!s.verifierExistenceCapteur("Excellent project"));
     }
 
-    SUBCASE("Test bannir sensor")
+    SUBCASE("Méthode bannirCapteur")
     {
         Service s("./dataset/_fileGroupeTestFiabilite.csv");
 
@@ -139,6 +136,49 @@ TEST_CASE("Classe Service")
         CHECK(!sensor->getEstDefectueux());
         s.bannirCapteur("Sensor0");
         CHECK(sensor->getEstDefectueux());
+
+    }
+    SUBCASE("Méthode convertirEnIndiceATMO")
+    {
+        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+        CHECK(s.convertirEnIndiceATMO("O3", 15) == 1);
+        CHECK(s.convertirEnIndiceATMO("O3", 42) == 2);
+        CHECK(s.convertirEnIndiceATMO("O3", 67) == 3);
+        CHECK(s.convertirEnIndiceATMO("O3", 240) == 10);
+
+        CHECK(s.convertirEnIndiceATMO("SO2", 20) == 1);
+        CHECK(s.convertirEnIndiceATMO("SO2", 60) == 2);
+        CHECK(s.convertirEnIndiceATMO("SO2", 500) == 10);
+
+        CHECK(s.convertirEnIndiceATMO("NO2", 15) == 1);
+        CHECK(s.convertirEnIndiceATMO("NO2", 42) == 2);
+        CHECK(s.convertirEnIndiceATMO("NO2", 400) == 10);
+
+        CHECK(s.convertirEnIndiceATMO("PM10", 3) == 1);
+        CHECK(s.convertirEnIndiceATMO("PM10", 10) == 2);
+        CHECK(s.convertirEnIndiceATMO("PM10", 80) == 10);
+
+        CHECK(s.convertirEnIndiceATMO("InvalidPollutant", 50) == -1);
+        CHECK(s.convertirEnIndiceATMO("O3", -5) == -1);
+    }
+    SUBCASE("Méthode CalculerQualiterParCapteur")
+    {
+        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Date debut(2010, 11, 30, 12, 0, 0);
+        Date fin(2035, 13, 30, 12, 0, 0);
+        
+        // Manual calculus : 3 ATMO measures from 2 sensors, 8, 9 => mean ~= 8.5 hence the expected result is 9 (std::round is rounding halfway cases away from zero)
+        // See https://en.cppreference.com/w/cpp/numeric/math/round
+
+        // Get sensor0
+        Sensor * sensor0 = service.capteursProches(44., -1., 1)[0]; 
+
+        // Get sensor64
+        Sensor * sensor64 = service.capteursProches(46.4, 1.8, 1)[0]; 
+
+
+        CHECK(service.calculerQualiterParCapteur(sensor0, debut, fin) == 8);
+        CHECK(service.calculerQualiterParCapteur(sensor64, debut, fin) == 9);
 
     }
 }

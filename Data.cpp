@@ -35,18 +35,21 @@ using namespace std;
 //} //----- Fin de Méthode
 
 
+/*
+ * Supprime les espaces, retours chariot et saut de ligne aux deux bouts
+ */
 string trim(const string& str) {
-    // use to trim the redundancy in the buffer when we read a path
     string result = str;
-    result.erase(result.find_last_not_of(" \r\n") + 1);  // Trim right side
-    result.erase(0, result.find_first_not_of(" \r\n"));  // Trim left side
+    result.erase(result.find_last_not_of(" \r\n") + 1);  
+    result.erase(0, result.find_first_not_of(" \r\n")); 
     return result;
 }
 
 bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath)
-{
-    unordered_map<string, PrivateOwner*> assocSensorOwner; // sensorID: PrivateOwner *
-    unordered_map<string, PrivateOwner*> uniquePrivateOwners; // userID: PrivateOwner *
+{   // Map temporaire capteur->propriétaire
+    unordered_map<string, PrivateOwner*> assocSensorOwner; 
+    // Assure l'unicité des PrivateOwner créés
+    unordered_map<string, PrivateOwner*> uniquePrivateOwners; 
 
     ifstream file(userPath);
     if (!file.is_open()) {
@@ -64,7 +67,7 @@ bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
         if (!getline(ss, sensorID, ';')) continue;
 
         
-
+        // Crée un nouveau PrivateOwner si besoin
         PrivateOwner * user = nullptr;
         if (uniquePrivateOwners.find(userID) == uniquePrivateOwners.end())
         {
@@ -76,13 +79,14 @@ bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
         {
             user = uniquePrivateOwners[userID];
         }
-
+        // Associe le capteur au propriétaire
         assocSensorOwner[sensorID] = user;
         
     }
     
     file.close();
 
+    // Lecture des informations GPS des capteurs
     ifstream file2(sensorPath);
     if (!file2.is_open()) {
         cout << "Erreur : impossible d'ouvrir le fichier " << sensorPath << endl;
@@ -101,16 +105,18 @@ bool Data::loadPrivateOwnersAndSensors(const string& userPath, const string& sen
         float latitudeConvertie = 0;
         float longitudeConvertie = 0;
 
-        // Mettre un try catch pour gérer erreur ??
+        // Conversion en float
         latitudeConvertie = stof(latitude);
         longitudeConvertie = stof(longitude);
 
+        // Cherche propriétaire associé (ou nullptr)
         PrivateOwner * owner = nullptr;
         if (assocSensorOwner.find(sensorID) != assocSensorOwner.end())
         {
             owner = assocSensorOwner[sensorID];
         }
 
+        // Création et stockage du Sensor
         Sensor * sensor = new Sensor(sensorID, latitudeConvertie, longitudeConvertie, false, owner);
         sensors.push_back(sensor);
         sensorsMap[sensorID] = sensor;
@@ -126,7 +132,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
     unordered_map<string, Provider*> providerMap;
     unordered_map<string, string> cleanerToProviderID;
 
-    // 1. Lire providerFilePath pour associer les cleaners aux providers
+    // --- 1. Lecture des associations provider-cleaner ---
     ifstream providerFile(providerFilePath);
     if (!providerFile)
     {
@@ -160,7 +166,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
 
     providerFile.close();
 
-    // 2. Lire cleanerFilePath et créer les AirCleaners
+    // --- 2. Lecture des AirCleaners ---
     ifstream cleanerFile(cleanerFilePath);
     if (!cleanerFile)
     {
@@ -182,7 +188,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
             cerr << "Format incorrect dans cleanerFile : " << line << endl;
             continue;
         }
-
+        // Conversion coordonnées
         float lat = stof(latStr);
         float lon = stof(lonStr);
 
@@ -204,7 +210,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
             p = providerMap[providerID];
         }
 
-        // Créer le AirCleaner
+        // Créer et stocker le AirCleaner
         AirCleaner* cleaner = new AirCleaner(id, lon, lat, start, stop, p);
         airCleaners.push_back(cleaner);
     }
@@ -214,9 +220,9 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
     return true;
 }
 
-// For debug purposes
+
 void Data::printDataStructure()
-{
+{   // Parcourt toutes les mesures pour affichage
     for (const auto& sensorEntry : measurements)
     {
         const string& sensorID = sensorEntry.first;
@@ -244,9 +250,9 @@ void Data::printDataStructure()
     }
 }
 
-// For debug purpoes
+
 void Data::printSensorsMap()
-{
+{   // Affiche chaque clé/valeur de sensorsMap
     for (const auto& pair : sensorsMap) {
         cout << "Key: " << pair.first << ", Value: " << (*(pair.second)).getSensorId() << endl;
     }

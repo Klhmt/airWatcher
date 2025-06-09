@@ -27,18 +27,18 @@
 using namespace std;
 
 class Measurement;
-//------------------------------------------------------------- Constantes
 
-//------------------------------------------------------------------ Types
-
+// Alias du type de structure pour stocker les mesures
+// Clé: ID du capteur
+// Valeur: map des dates vers vecteurs de mesures
 typedef unordered_map<string, map<Date, vector<Measurement*>>> dataStructure;
 
-//------------------------------------------------------------------------
-// Rôle de la classe <Data>
-//
-//  Read CSV files, creates domain objet and put them into STL containers
-//------------------------------------------------------------------------
-
+/*
+  Classe Data
+  -----------
+  Lit des fichiers CSV, crée des objets métiers et les organise
+  dans des conteneurs STL pour un traitement ultérieur.
+ */
 class Data 
 {
 //----------------------------------------------------------------- PUBLIC
@@ -46,49 +46,35 @@ class Data
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    // This function loads private owner and sensor data from two specified files.
-    // It populates the 'privateOwners', 'sensors', and 'sensorsMap' members of the Data class.
-    //
-    // Parameters:
-    //   userPath: The file path to the private owner (user) data. Format: userID;sensorID;
-    //   sensorPath: The file path to the sensor data. Format: sensorID;latitude;longitude;
-    //
-    // Returns:
-    //   true if both files are successfully opened and processed; false otherwise.
+    /*
+      Charge les propriétaires privés et leurs capteurs.
+      @param userPath    Chemin vers le fichier users.csv (format: userID;sensorID;)
+      @param sensorPath  Chemin vers le fichier sensors.csv (format: sensorID;lat;lon;)
+      @return true si le chargement réussit, false sinon
+     */
     bool loadPrivateOwnersAndSensors(const string& userPath, const string& sensorPath); 
 
-    // This function loads provider and air cleaner data from two specified files.
-    // It populates the 'providers' (vector<Provider*>) and 'airCleaners' (vector<AirCleaner*>)
-    // members of the Data class.
-    //
-    // Parameters:
-    //   providerFilePath: Path to the provider association file. Format: providerID;cleanerID;
-    //   cleanerFilePath: Path to the air cleaner details file. Format: id;lat;lon;startStr;stopStr;
-    //
-    // Returns:
-    //   true if both files are successfully opened and processed; false otherwise
+    /*
+      Charge les fournisseurs et leurs AirCleaners.
+      @param providerFilePath  Chemin vers providers.csv (format: providerID;cleanerID;)
+      @param cleanerFilePath   Chemin vers cleaners.csv (format: id;lat;lon;start;stop;)
+      @return true si le chargement réussit, false sinon
+     */
     bool loadProviderAndAirWatcher(const string& providerFilePath, const string& cleanerFilePath);
 
 
-    // This function loads environmental measurement data from a specified file.
-    // It populates the 'measurements' member of the Data class, which is assumed
-    // to be a complex data structure (e.g., unordered_map<string, unordered_map<Date, vector<Measurement*>>>).
-    //
-    //  CONTRACT : loadPrivateOwnersAndSensors has to be called BEFORE to populate sensorsMap & sensors attributes
-    //
-    // Parameters:
-    //   measurementFilePath: The file path to the measurement data.
-    //                        Format per line: datetime;sensorID;pollutant;value;
-    //                        datetime format: YYYY-MM-DD HH:MM:SS
-    //
-    // Returns:
-    //   true if the file is successfully opened and processed; false otherwise.
+    /*
+      Charge les mesures environnementales.
+      Doit être appelé après loadPrivateOwnersAndSensors pour initialiser sensorsMap.
+      @param measurementFilePath  Chemin vers measurements.csv
+      @return true si le chargement réussit, false sinon
+     */
     bool loadMeasurements(const string& measurementFilePath);
 
-    // Display measurements attribute on std::cout. For debugging purposes only
+    /// Affiche la structure de données des mesures (debug)
     void printDataStructure();
 
-    // Display sensorsMap attribute on std::cout. For debugging purposes only
+    /// Affiche la map des capteurs (debug)
     void printSensorsMap();
 
     //-------- Getters ---------
@@ -109,24 +95,27 @@ public:
     
 
 //-------------------------------------------- Constructeurs - destructeur
-    Data ( const Data & unData );
-
+    
     Data ( );
-
-    // Constructor : the fileGroupPath is the path to a CSV file containing the path to the dataset, in this order and format (1 path by line): 
-    // Path to providers.csv
-    // Path to cleaners.csv
-    // Path to users.csv
-    // Path to sensors.csv
-    // Path to mesurements.csv
+    Data ( const Data & unData );
+    /*
+      Construit à partir d'un fichier listant les chemins des datasets:
+      1. providers.csv
+      2. cleaners.csv
+      3. users.csv
+      4. sensors.csv
+      5. measurements.csv
+     */
     Data (const string& fileGroupePath );
 
-    // Destructor for the Data class.
-    // This destructor is responsible for deallocating all dynamically allocated
-    // objects (PrivateOwner, Sensor, AirCleaner, Provider, Measurement)
-    // that were stored in the Data class's member vectors and maps.
-    // It frees the dynamically allocated memory, then sets the pointer to nullptr to avoid dangling pointers.
-    // We do that because otherwise Valgrind is gonna scream at us :) !!!
+    /* Destructeur de la classe Data.
+     Ce destructeur se charge de libérer tous les objets alloués dynamiquement
+     (PrivateOwner, Sensor, AirCleaner, Provider, Measurement)
+     qui étaient stockés dans les vecteurs et maps membres de la classe Data.
+     Il libère la mémoire allouée dynamiquement, puis assigne nullptr aux pointeurs
+     pour éviter les pointeurs pendants.
+     On fait cela pour que Valgrind ne nous remonte pas d’erreurs :) !!
+    */
     virtual ~Data ( );
     
 
@@ -136,13 +125,13 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    vector<Sensor*> sensors;
-    vector<PrivateOwner*> privateOwners;
-    vector<Provider*> providers;  
-    vector<AirCleaner*> airCleaners;
-    unordered_map<string, Sensor*> sensorsMap;
-    dataStructure measurements;
-    string baseFolderPath; // chemin vers le dossier
+    vector<Sensor*> sensors;    /// Tous les capteurs chargés
+    vector<PrivateOwner*> privateOwners;    /// Tous les propriétaires privés
+    vector<Provider*> providers;    /// Tous les fournisseurs
+    vector<AirCleaner*> airCleaners;    /// Tous les AirCleaners
+    unordered_map<string, Sensor*> sensorsMap;    /// Accès rapide capteur par ID
+    dataStructure measurements;     /// Mesures par capteur et date
+    string baseFolderPath;     /// chemin vers le dossier
 };
 
 //-------------------------------- Autres définitions dépendantes de <Data>

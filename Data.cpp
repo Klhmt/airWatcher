@@ -136,7 +136,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
     ifstream providerFile(providerFilePath);
     if (!providerFile)
     {
-        cerr << "Erreur : impossible d'ouvrir " << providerFilePath << endl;
+        cout << "Erreur : impossible d'ouvrir " << providerFilePath << endl;
         return false;
     }
 
@@ -148,7 +148,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
 
         if (!getline(ss, providerID, ';') || !getline(ss, cleanerID, ';'))
         {
-            cerr << "Format incorrect dans providerFile : " << line << endl;
+            cout << "Format incorrect dans providerFile : " << line << endl;
             continue;
         }
 
@@ -170,7 +170,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
     ifstream cleanerFile(cleanerFilePath);
     if (!cleanerFile)
     {
-        cerr << "Erreur : impossible d'ouvrir " << cleanerFilePath << endl;
+        cout << "Erreur : impossible d'ouvrir " << cleanerFilePath << endl;
         return false;
     }
 
@@ -185,7 +185,7 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
             !getline(ss, startStr, ';') ||
             !getline(ss, stopStr, ';'))
         {
-            cerr << "Format incorrect dans cleanerFile : " << line << endl;
+            cout << "Format incorrect dans cleanerFile : " << line << endl;
             continue;
         }
         // Conversion coordonnées

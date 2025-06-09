@@ -61,7 +61,7 @@ int Service::calculerQualiterAir(float lat, float lon, float radius, Date start,
 {
     // Récupère les capteurs proches dans le rayon autour du point (lat, lon)
     vector<Sensor*> capteurs = capteursProches(lat, lon, radius);
-    
+
     // Si aucun capteur trouvé, on retourne une erreur
     if (capteurs.empty()) return -1;
 

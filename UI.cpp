@@ -209,6 +209,7 @@ void UI::application()
                 } while (!(dateDebut < dateFin));
 
                 // Appel service
+
                 int qualite = service.calculerQualiterAir(latitude, longitude, rayon, dateDebut, dateFin);
                 if (qualite == -1) {
                     cout << "Impossible de calculer la qualite de l'air : donnees insuffisantes ! " << endl;

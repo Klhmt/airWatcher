@@ -12,6 +12,7 @@
 
 //---------------------------------------------------------- Includes
 #include <iostream>
+#include "Service.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ class UI
     //------------------------------------------------------------------ PRIVE
 
     private :
+    Service service; // Instance de la classe Service 
     // Attributs privés
    
 };

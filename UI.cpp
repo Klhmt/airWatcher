@@ -90,98 +90,143 @@ bool UI::authentification()
 } //----- Fin de la méthode authentification
 
 //-------------------------------------------- Autres méthodes
+
+
 void UI::application()
 // Algorithme :
-//
+// 
 {
-    Date date, dateDebut, dateFin;
-    int jour, mois, annee;
-    int heure, minute, seconde;
+    bool continuer = true;
 
-    int numeroCapteur;
-
-    float latitude, longitude, rayon;
-
-    bool verificationDate = false;
-
-    int choix = 0;
-    cout << "-------------------------------------------------" << endl;
-    cout << "Bienvenue dans l'application AirWatcher" << endl;
-    cout << "1. Determiner la fiabilite d'un capteur" << endl;
-    cout << "2. Calculer la qualite de l'air" << endl;
-    cout << "3. Quitter l'application" << endl;
-    cout << "Veuillez entrer votre choix : ";
-    cin >> choix;
-    switch (choix)
+    while (continuer)
     {
-        case 1:
-            cout << "Veuillez entrer le numero du capteur : ";
-            cin >> numeroCapteur;
+        Date date, dateDebut, dateFin;
+        int jour, mois, annee;
+        int heure, minute, seconde;
+        float latitude, longitude, rayon;
+        int choix = 0;
+        cout << "-------------------------------------------------" << endl;
+        cout << "Bienvenue dans l'application AirWatcher" << endl;
+        cout << "1. Determiner la fiabilite d'un capteur" << endl;
+        cout << "2. Calculer la qualite de l'air" << endl;
+        cout << "3. Quitter l'application" << endl;
+        cout << "Veuillez entrer votre choix : ";
+        cin >> choix;
 
-
-            // Appel méthode determinerFiabiliteCapteur
-
-            break;
-
-        case 2:
-            cout << "Veuillez entrer la latitude : ";
-            cin >> latitude;
-
-            cout << "Veuillez entrer la longitude : ";
-            cin >> longitude;
-
-            cout << "Veuillez entrer le rayon autour de ce point : ";
-            cin >> rayon;
-
-            while (rayon <= 0)
+        switch (choix)
+        {
+            case 1:
             {
-                cout << "Le rayon doit etre superieur a 0, veuillez reessayer : ";
+                string sensorId;
+                float ecartMax;
+
+                cout << "Veuillez entrer l'identifiant du capteur : ";
+                cin >> sensorId;
+
+                cout << "Veuillez entrer le rayon de recherche (en km) : ";
                 cin >> rayon;
-            }
 
-            cout << "Veuillez entrer la date de debut (jj/mm/yyyy) : "; 
-            date.lireDate(jour, mois, annee);
+                cout << "Veuillez entrer l'ecart maximum en pourcentage (ex: 10 pour 10%) : ";
+                cin >> ecartMax;
 
-            cout << "Veuillez entrer l'heure de debut (hh:mm) : ";
-            date.lireHeure(heure, minute, seconde);
-
-            dateDebut = Date(annee, mois, jour, heure, minute, seconde);
-
-            cout << "Veuillez entrer la date de fin (jj/mm/yyyy) : ";
-            date.lireDate(jour, mois, annee);
-
-            cout << "Veuillez entrer l'heure de fin (hh:mm) : ";
-            date.lireHeure(heure, minute, seconde);
-
-            dateFin = Date(annee, mois, jour, heure, minute, seconde);
-
-            verificationDate = (dateDebut < dateFin);
-
-            while (!verificationDate)
-            {
-                cout << "Veuillez mettre une date de fin posterieure a la date de debut : " ;
+                cout << "Date de debut (jj/mm/yyyy) : ";
                 date.lireDate(jour, mois, annee);
-                
-                cout << "Veuillez entrer l'heure de fin (hh:mm) : ";
+
+                cout << "Heure de debut (hh:mm) : ";
                 date.lireHeure(heure, minute, seconde);
+                dateDebut = Date(annee, mois, jour, heure, minute, seconde);
 
+                cout << "Date de fin (jj/mm/yyyy) : ";
+                date.lireDate(jour, mois, annee);
+
+                cout << "Heure de fin (hh:mm) : ";
+                date.lireHeure(heure, minute, seconde);
                 dateFin = Date(annee, mois, jour, heure, minute, seconde);
-                verificationDate = (dateDebut < dateFin);
+
+                while (!(dateDebut < dateFin))
+                {
+                    cout << "Date de fin invalide. Reessayez." << endl;
+                    date.lireDate(jour, mois, annee);
+                    date.lireHeure(heure, minute, seconde);
+                    dateFin = Date(annee, mois, jour, heure, minute, seconde);
+                }
+
+                int resultat = service.determinerFiabiliteCapteur(sensorId, rayon, ecartMax, dateDebut, dateFin);
+
+                switch (resultat)
+                {
+                    case 0:
+                        cout << "Erreur : Capteur non valide, veuillez reessayer : " << endl;
+                        break;
+                    case 1:
+                        cout << "Le capteur est FIABLE." << endl;
+                        break;
+                    case 2:
+                        cout << "Le capteur est NON FIABLE." << endl;
+                        break;
+                }
+
+                break;
             }
-            
 
-            // Appeler la méthode calculerQualiteAir
-            cout << "Affichage des resultats"<<endl;
-            break;
+            case 2:
+            {
+                cout << "Veuillez entrer la latitude : ";
+                cin >> latitude;
 
-        case 3:
-            cout << "Merci d'avoir utilise l'application AirWatcher, au revoir et a bientot !!!" << endl;
-            break;
+                cout << "Veuillez entrer la longitude : ";
+                cin >> longitude;
 
-        default:
-            cout << "Choix invalide, veuillez reessayer." << endl;
-            application();
-            break;
+                cout << "Veuillez entrer le rayon autour de ce point (km) : ";
+                cin >> rayon;
+
+                while (rayon <= 0)
+                {
+                    cout << "Le rayon doit etre superieur a 0, veuillez reessayer : ";
+                    cin >> rayon;
+                }
+
+                cout << "Date de debut (jj/mm/yyyy) : ";
+                date.lireDate(jour, mois, annee);
+
+                cout << "Heure de debut (hh:mm) : ";
+                date.lireHeure(heure, minute, seconde);
+                dateDebut = Date(annee, mois, jour, heure, minute, seconde);
+
+                cout << "Date de fin (jj/mm/yyyy) : ";
+                date.lireDate(jour, mois, annee);
+
+                cout << "Heure de fin (hh:mm) : ";
+                date.lireHeure(heure, minute, seconde);
+                dateFin = Date(annee, mois, jour, heure, minute, seconde);
+
+                while (!(dateDebut < dateFin))
+                {
+                    cout << "Date de fin invalide. Reessayez : " << endl;
+                    date.lireDate(jour, mois, annee);
+                    date.lireHeure(heure, minute, seconde);
+                    dateFin = Date(annee, mois, jour, heure, minute, seconde);
+                }
+
+                int qualite = service.calculerQualiterAir(latitude, longitude, rayon, dateDebut, dateFin);
+
+                if (qualite == -1)
+                    cout << "Impossible de calculer la qualite de l'air : données incorrects, veuillez reessayer : " << endl;
+                else
+                    cout << "Indice moyen sur la periode : " << qualite << endl;
+
+                break;
+            }
+
+            case 3:
+                cout << "Merci d'avoir utilise l'application AirWatcher, au revoir et a bientot !!!" << endl;
+                continuer = false;
+                break;
+
+            default:
+                cout << "Choix invalide, veuillez reessayer." << endl;
+                break;
+        }
     }
 } //----- Fin de la méthode application
 

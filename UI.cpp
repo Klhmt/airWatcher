@@ -163,7 +163,7 @@ void UI::application()
                 switch (resultat)
                 {
                     case 0:
-                        cout << "Erreur : pas assez de donnees pour ce capteur." << endl;
+                        cout << "Il n'y a pas assez de données pour vérifier si ce capteur est fiable ou non" << endl;
                         break;
                     case 1:
                         cout << "Le capteur est FIABLE." << endl;

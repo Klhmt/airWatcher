@@ -22,38 +22,43 @@ using namespace std;
 
 
 //----------------------------------------------------- Méthodes publiques
-// type Service::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
 
 
 int Service::determinerFiabiliteCapteur(string sensorId, float radius, float ecartMax, Date debut, Date fin)
-// Algorithme : on prend les capteurs voisins dans le radius, on calcule leur qualite moyen 
+// Algorithme : on prend les capteurs voisins dans le radius, on calcule l'indice ATMO moyen
 //              et compare avec la qualite de ce capteur avec un ecart max
 //              renvoie 0 si erreue (sensorId non valide, pas de capteurs proches ou pas assez de donnees), 1 si fiable et 2 sinon
 //{
 //} //----- Fin de Méthode
 {    
-    //Get le capteur a determiner et ses voisins dans le radius
+    //G Récupérer le capteur associé à sensorId
     Sensor* s = data.getSensorById(sensorId);
     if (s == nullptr) return 0;
+
+    int qS = calculerQualiterParCapteur(s, debut,fin);
+    if (qS == -1) return 0; // Si pas de donnée pour ce capteur dans cette période -> inutile de continuer
+
+    // On récupère les capteurs proches
     vector<Sensor*> capteursProches = this->capteursProches(s->getLatitude(),s->getLongitude(),radius);
-    if (capteursProches.size()==0) return 0;
+    if (capteursProches.size() == 0) return 0; 
 
     //Calculer le moyen et comparer
     int sum = 0;
     int count = 0;
     for (Sensor* capteur : capteursProches)
     {
-        sum += calculerQualiterParCapteur(capteur,debut, fin);
+        if (capteur == s) continue; // on skip le capteur dont on doit déterminer l'efficacité
+        int atmo = calculerQualiterParCapteur(capteur,debut, fin); 
+        if (atmo == -1) continue;
+        sum += atmo;
         count++;
     }
+    if (count < 3) return 0; // Il faut au minimum 3 indices ATMO pour comparer
+
     int moyen = sum/count;
-    int qS = calculerQualiterParCapteur(s, debut,fin);
-    if((qS<moyen*(1+ecartMax/100)) && (qS>moyen*(1-ecartMax/100))) return 1;
-    else return 0;
+
+    if ((qS < moyen*(1+ecartMax/100)) || (qS > moyen*(1-ecartMax/100))) return 2; // Non fiable
+    else return 1;  // Fiable
 }
 
 

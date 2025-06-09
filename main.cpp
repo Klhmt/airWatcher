@@ -1,20 +1,23 @@
 #include <iostream>
-
+#include "Service.h"
 #include "UI.h"
-using namespace std;
-
 
 int main()
 {
-    // Ici se trouvera l'appel à la classe UI
-    UI ui;
+    
+    Service service("dataset/_fileGroupOrigine.csv");
 
-    if (ui.authentification() == false)
+    UI ui(service);
+
+    if (ui.authentification())
     {
-        cout << "Erreur d'authentification" << endl;
+        ui.application();
+    }
+    else
+    {
+        std::cerr << "Erreur d'authentification ! \n";
         return 1;
     }
 
-    ui.application();
     return 0;
 }

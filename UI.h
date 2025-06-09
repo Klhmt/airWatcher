@@ -33,9 +33,8 @@ class UI
     //----------------------------------------------------------------- PUBLIC
     public :
 
-    //-------------------------------------------- Constructeur par défaut
-    UI();
-  
+    //-------------------------------------------- Constructeur avec paramètres
+    UI(Service& s);
 
     //--------------------------------- Destructeur
     ~UI();
@@ -47,7 +46,7 @@ class UI
     //------------------------------------------------------------------ PRIVE
 
     private :
-    Service service; // Instance de la classe Service 
+    Service &service; // Instance de la classe Service 
     // Attributs privés
    
 };

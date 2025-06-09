@@ -9,24 +9,27 @@
 //---------- Réalisation de la classe <UI> (fichier UI.cpp) ------------
 //---------------------------------------------------------------- INCLUDE
 //-------------------------------------------------------- Include système
+#include <iostream>
 
 //------------------------------------------------------ Include personnel
 #include "UI.h"
 #include "Date.h"
 
+using namespace std;
 
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
 
-//-------------------------------------------- Constructeur par défaut
-UI::UI()
+//-------------------------------------------- Constructeur avec paramètres
+
+UI::UI(Service &s) : service(s)
 // Algorithme :
 //
 {
     #ifdef MAP
-    cout << "Appel au constructeur par défaut de <UI>" << endl;
+    cout << "Appel au constructeur de <UI> avec Service" << endl;
     #endif
-} //----- Fin du constructeur par défaut
+} //----- Fin du constructeur avec paramètres
 
 
 //-------------------------------------------- Destructeur
@@ -120,43 +123,47 @@ void UI::application()
                 string sensorId;
                 float ecartMax;
 
-                cout << "Veuillez entrer l'identifiant du capteur : ";
-                cin >> sensorId;
+                // Saisie et validation de l'ID capteur
+                do {
+                    cout << "Veuillez entrer l'identifiant du capteur : ";
+                    cin >> sensorId;
+                    if (!service.verifierExistenceCapteur(sensorId)) {
+                        cout << "Capteur '" << sensorId << "' inconnu. Veuillez reessayer." << endl;
+                    }
+                } while (!service.verifierExistenceCapteur(sensorId));
 
+                // Saisie des paramètres
                 cout << "Veuillez entrer le rayon de recherche (en km) : ";
                 cin >> rayon;
-
                 cout << "Veuillez entrer l'ecart maximum en pourcentage (ex: 10 pour 10%) : ";
                 cin >> ecartMax;
 
+                // Saisie date début
                 cout << "Date de debut (jj/mm/yyyy) : ";
                 date.lireDate(jour, mois, annee);
-
                 cout << "Heure de debut (hh:mm) : ";
                 date.lireHeure(heure, minute, seconde);
                 dateDebut = Date(annee, mois, jour, heure, minute, seconde);
 
-                cout << "Date de fin (jj/mm/yyyy) : ";
-                date.lireDate(jour, mois, annee);
-
-                cout << "Heure de fin (hh:mm) : ";
-                date.lireHeure(heure, minute, seconde);
-                dateFin = Date(annee, mois, jour, heure, minute, seconde);
-
-                while (!(dateDebut < dateFin))
-                {
-                    cout << "Date de fin invalide. Reessayez." << endl;
+                // Saisie et validation date fin
+                do {
+                    cout << "Date de fin (jj/mm/yyyy) : ";
                     date.lireDate(jour, mois, annee);
+                    cout << "Heure de fin (hh:mm) : ";
                     date.lireHeure(heure, minute, seconde);
                     dateFin = Date(annee, mois, jour, heure, minute, seconde);
-                }
+                    if (!(dateDebut < dateFin)) {
+                        cout << "Date de fin invalide, celle-ci doit etre posterieure a la date de debut ! " << endl;
+                    }
+                } while (!(dateDebut < dateFin));
 
+                // Appel service
                 int resultat = service.determinerFiabiliteCapteur(sensorId, rayon, ecartMax, dateDebut, dateFin);
 
                 switch (resultat)
                 {
                     case 0:
-                        cout << "Erreur : Capteur non valide, veuillez reessayer : " << endl;
+                        cout << "Erreur : pas assez de donnees pour ce capteur." << endl;
                         break;
                     case 1:
                         cout << "Le capteur est FIABLE." << endl;
@@ -171,49 +178,43 @@ void UI::application()
 
             case 2:
             {
+                // Saisie coordonnées et validation du rayon
                 cout << "Veuillez entrer la latitude : ";
                 cin >> latitude;
-
                 cout << "Veuillez entrer la longitude : ";
                 cin >> longitude;
-
-                cout << "Veuillez entrer le rayon autour de ce point (km) : ";
-                cin >> rayon;
-
-                while (rayon <= 0)
-                {
-                    cout << "Le rayon doit etre superieur a 0, veuillez reessayer : ";
+                do {
+                    cout << "Veuillez entrer le rayon autour de ce point (km) : ";
                     cin >> rayon;
-                }
+                    if (rayon <= 0) cout << "Le rayon doit etre superieur a 0 ! " << endl;
+                } while (rayon <= 0);
 
-                cout << "Date de debut (jj/mm/yyyy) : ";
+                // Saisie date début
+                cout << "Veuillez entrer la date de debut (jj/mm/yyyy) : ";
                 date.lireDate(jour, mois, annee);
-
-                cout << "Heure de debut (hh:mm) : ";
+                cout << "Veuillez entrer l'heure de debut (hh:mm) : ";
                 date.lireHeure(heure, minute, seconde);
                 dateDebut = Date(annee, mois, jour, heure, minute, seconde);
 
-                cout << "Date de fin (jj/mm/yyyy) : ";
-                date.lireDate(jour, mois, annee);
-
-                cout << "Heure de fin (hh:mm) : ";
-                date.lireHeure(heure, minute, seconde);
-                dateFin = Date(annee, mois, jour, heure, minute, seconde);
-
-                while (!(dateDebut < dateFin))
-                {
-                    cout << "Date de fin invalide. Reessayez : " << endl;
+                // Saisie et validation date fin
+                do {
+                    cout << "Veuillez entrer la date de fin (jj/mm/yyyy) : ";
                     date.lireDate(jour, mois, annee);
+                    cout << "Veuillez entrer l'heure de fin (hh:mm) : ";
                     date.lireHeure(heure, minute, seconde);
                     dateFin = Date(annee, mois, jour, heure, minute, seconde);
-                }
+                    if (!(dateDebut < dateFin)) {
+                        cout << "Date de fin invalide, celle-ci doit etre posterieure a la date de debut ! " << endl;
+                    }
+                } while (!(dateDebut < dateFin));
 
+                // Appel service
                 int qualite = service.calculerQualiterAir(latitude, longitude, rayon, dateDebut, dateFin);
-
-                if (qualite == -1)
-                    cout << "Impossible de calculer la qualite de l'air : données incorrects, veuillez reessayer : " << endl;
-                else
+                if (qualite == -1) {
+                    cout << "Impossible de calculer la qualite de l'air : donnees insuffisantes ! " << endl;
+                } else {
                     cout << "Indice moyen sur la periode : " << qualite << endl;
+                }
 
                 break;
             }
@@ -229,4 +230,3 @@ void UI::application()
         }
     }
 } //----- Fin de la méthode application
-

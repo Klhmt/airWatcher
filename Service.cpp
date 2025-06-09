@@ -31,7 +31,7 @@ int Service::determinerFiabiliteCapteur(string sensorId, float radius, float eca
 //{
 //} //----- Fin de Méthode
 {    
-    //G Récupérer le capteur associé à sensorId
+    // Récupérer le capteur associé à sensorId
     Sensor* s = data.getSensorById(sensorId);
     if (s == nullptr) return 0;
 
@@ -55,9 +55,9 @@ int Service::determinerFiabiliteCapteur(string sensorId, float radius, float eca
     }
     if (count < 3) return 0; // Il faut au minimum 3 indices ATMO pour comparer
 
-    int moyen = sum/count;
+    float moyen = (float)sum/count;
 
-    if ((qS < moyen*(1+ecartMax/100)) || (qS > moyen*(1-ecartMax/100))) return 2; // Non fiable
+    if (qS < moyen * (1 - ecartMax / 100.0) || qS > moyen * (1 + ecartMax / 100.0)) return 2;
     else return 1;  // Fiable
 }
 

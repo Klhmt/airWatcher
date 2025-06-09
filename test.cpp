@@ -53,7 +53,7 @@ TEST_CASE("Classe Service")
 {
     SUBCASE("Méthode calculerQualiterAir : calculer ATMO avec 1 capteur : les dates restreignent au seul capteur 64")
     {
-        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Service service("./dataset/_fileGroupeTest.csv");
         Date debut(2019, 11, 30, 12, 0, 0);
         Date fin(2019, 13, 30, 12, 0, 0);
         
@@ -64,7 +64,7 @@ TEST_CASE("Classe Service")
 
     SUBCASE("Méthode calculerQualiterAir : Calculer ATMO avec 1 capteur : les dates correspondent aux 2 capteurs 64 et 0, mais radius sélectionne uniquement 0")
     {
-        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Service service("./dataset/_fileGroupeTest.csv");
         Date debut(2010, 11, 30, 12, 0, 0);
         Date fin(2035, 13, 30, 12, 0, 0);
         
@@ -73,7 +73,7 @@ TEST_CASE("Classe Service")
 
     SUBCASE("Méthode calculerQualiterAir : Calculer ATMO avec 2 capteur")
     {
-        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Service service("./dataset/_fileGroupeTest.csv");
         Date debut(2010, 11, 30, 12, 0, 0);
         Date fin(2035, 13, 30, 12, 0, 0);
         
@@ -84,7 +84,7 @@ TEST_CASE("Classe Service")
 
     SUBCASE("Méthode calculerQualiterAir : pas de capteur aux alentours")
     {
-        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Service service("./dataset/_fileGroupeTest.csv");
         Date debut(2010, 11, 30, 12, 0, 0);
         Date fin(2035, 13, 30, 12, 0, 0);
 
@@ -93,7 +93,7 @@ TEST_CASE("Classe Service")
 
     SUBCASE("Méthode calculerQualiterAir : pas de donnée dans les dates données")
     {
-        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Service service("./dataset/_fileGroupeTest.csv");
         Date debut(2001, 11, 30, 12, 0, 0);
         Date fin(202, 13, 30, 12, 0, 0);
         
@@ -102,7 +102,7 @@ TEST_CASE("Classe Service")
 
     SUBCASE("Méthode distance") 
     {
-        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+        Service s("./dataset/_fileGroupeTest.csv");
         // Useful online calculator: https://calculator.academy/haversine-distance-calculator/
         // Correspond to the distance between Sensor 16 and 31 -> 290.1 km with 1% error allowed
         CHECK(s.distance(44.4, 3.2, 45.2, -0.3) == doctest::Approx(290.1).epsilon(0.01));
@@ -110,7 +110,7 @@ TEST_CASE("Classe Service")
 
     SUBCASE("Méthode capteursProches")
     {
-        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+        Service s("./dataset/_fileGroupeTest.csv");
         CHECK(s.capteursProches(44., -1., 1).size() == 1);
 
         CHECK(s.capteursProches(49., -9., 1).size() == 0);
@@ -120,7 +120,7 @@ TEST_CASE("Classe Service")
 
     SUBCASE("Méthode vérifierExistanceCapteur")
     {
-        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+        Service s("./dataset/_fileGroupeTest.csv");
 
         CHECK(s.verifierExistenceCapteur("Sensor3"));
 
@@ -129,7 +129,7 @@ TEST_CASE("Classe Service")
 
     SUBCASE("Méthode bannirCapteur")
     {
-        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+        Service s("./dataset/_fileGroupeTest.csv");
 
         // Get sensor0
         Sensor * sensor = s.capteursProches(44., -1., 1)[0]; 
@@ -140,7 +140,7 @@ TEST_CASE("Classe Service")
     }
     SUBCASE("Méthode convertirEnIndiceATMO")
     {
-        Service s("./dataset/_fileGroupeTestFiabilite.csv");
+        Service s("./dataset/_fileGroupeTest.csv");
         CHECK(s.convertirEnIndiceATMO("O3", 15) == 1);
         CHECK(s.convertirEnIndiceATMO("O3", 42) == 2);
         CHECK(s.convertirEnIndiceATMO("O3", 67) == 3);
@@ -163,7 +163,7 @@ TEST_CASE("Classe Service")
     }
     SUBCASE("Méthode CalculerQualiterParCapteur")
     {
-        Service service("./dataset/_fileGroupeTestFiabilite.csv");
+        Service service("./dataset/_fileGroupeTest.csv");
         Date debut(2010, 11, 30, 12, 0, 0);
         Date fin(2035, 13, 30, 12, 0, 0);
         
@@ -179,6 +179,30 @@ TEST_CASE("Classe Service")
 
         CHECK(service.calculerQualiterParCapteur(sensor0, debut, fin) == 8);
         CHECK(service.calculerQualiterParCapteur(sensor64, debut, fin) == 9);
+
+    }
+    SUBCASE("Méthode FiabiliteCapteur")
+    {
+        Service service("./dataset/_fileGroupeTestFiabiliteCapteur.csv");
+
+        Date debut(2010, 11, 30, 12, 0, 0);
+        Date fin(2035, 13, 30, 12, 0, 0);
+
+        // Manual calculus -> Sensor 0 = 8; Sensor64 = 2; Sensor5 = 3; Sensor22 = 3; Sensor2 = 8
+        // Mean ~ 5,5, max 10% difference -> Sensor64 is unreliable
+        CHECK(service.determinerFiabiliteCapteur("Sensor64", 1000, 10, debut, fin) == 2); 
+        // Now with 70% difference allowed -> Sensor64 is reliable
+        CHECK(service.determinerFiabiliteCapteur("Sensor64", 1000, 70, debut, fin) == 1);
+
+        // Missing data in this new interval
+        Date debut2(200, 11, 30, 12, 0, 0);
+        Date fin2(203, 13, 30, 12, 0, 0);
+
+        CHECK(service.determinerFiabiliteCapteur("Sensor64", 1000, 10, debut2, fin2) == 0); 
+
+        // No sensor found because of the radius is too small
+        CHECK(service.determinerFiabiliteCapteur("Sensor64", 0.1, 10, debut2, fin2) == 0); 
+
 
     }
 }

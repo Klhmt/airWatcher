@@ -170,6 +170,15 @@ void UI::application()
                         break;
                     case 2:
                         cout << "Le capteur est NON FIABLE." << endl;
+                          {
+                            char choixDesactivation;
+                            cout << "Voulez-vous désactiver ce capteur ? (o/n) : ";
+                            cin >> choixDesactivation;
+                            if (choixDesactivation == 'o' || choixDesactivation == 'O') {
+                                service.bannirCapteur(sensorId);
+                                cout << "Le capteur " << sensorId << " a été désactivé." << endl;
+                            }
+                        }
                         break;
                 }
 

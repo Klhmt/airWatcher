@@ -1,11 +1,3 @@
-/*************************************************************************
-                           PrivateOwner  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
 //---------- Interface de la classe <PrivateOwner> (fichier PrivateOwner.h) ----------------
 
 #if ! defined ( PRIVATEOWNER_H )

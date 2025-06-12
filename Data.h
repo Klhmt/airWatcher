@@ -1,11 +1,3 @@
-/*************************************************************************
-                           Data  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
 //---------- Interface de la classe <Data> (fichier Data.h) ----------------
 #if ! defined ( DATA_H )
 #define DATA_H
@@ -26,6 +18,8 @@
 
 using namespace std;
 
+//--------------------------------------------------- Définition de types
+
 class Measurement;
 
 // Alias du type de structure pour stocker les mesures
@@ -33,12 +27,12 @@ class Measurement;
 // Valeur: map des dates vers vecteurs de mesures
 typedef unordered_map<string, map<Date, vector<Measurement*>>> dataStructure;
 
-/*
-  Classe Data
-  -----------
-  Lit des fichiers CSV, crée des objets métiers et les organise
-  dans des conteneurs STL pour un traitement ultérieur.
- */
+
+//------------------------------------------------------------------------
+// Rôle de la classe <Data>
+//  Lit des fichiers CSV, crée des objets métiers et les organise 
+//  dans des conteneurs STL
+//------------------------------------------------------------------------
 class Data 
 {
 //----------------------------------------------------------------- PUBLIC
@@ -70,12 +64,6 @@ public:
       @return true si le chargement réussit, false sinon
      */
     bool loadMeasurements(const string& measurementFilePath);
-
-    /// Affiche la structure de données des mesures (debug)
-    void printDataStructure();
-
-    /// Affiche la map des capteurs (debug)
-    void printSensorsMap();
 
     //-------- Getters ---------
 
@@ -113,7 +101,7 @@ public:
      (PrivateOwner, Sensor, AirCleaner, Provider, Measurement)
      qui étaient stockés dans les vecteurs et maps membres de la classe Data.
      Il libère la mémoire allouée dynamiquement, puis assigne nullptr aux pointeurs
-     pour éviter les pointeurs pendants.
+     pour éviter les dangling pointers.
      On fait cela pour que Valgrind ne nous remonte pas d’erreurs :) !!
     */
     virtual ~Data ( );
@@ -131,7 +119,6 @@ protected:
     vector<AirCleaner*> airCleaners;    /// Tous les AirCleaners
     unordered_map<string, Sensor*> sensorsMap;    /// Accès rapide capteur par ID
     dataStructure measurements;     /// Mesures par capteur et date
-    string baseFolderPath;     /// chemin vers le dossier
 };
 
 //-------------------------------- Autres définitions dépendantes de <Data>

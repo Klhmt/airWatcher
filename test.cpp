@@ -1,3 +1,5 @@
+//---------- Fichier de tests unitaires - code présent uniquement dans l'exécutable de test (fichier test.cpp) ----------------
+
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 
@@ -37,7 +39,7 @@ TEST_CASE("Classe Data")
 
 TEST_CASE("Classe Date")
 {
-    SUBCASE("Test Surcharge Date")
+    SUBCASE("Test Surcharge opérateur Date")
     {
         Date date1(2023, 10, 1, 12, 0, 0);
         Date date2(2023, 10, 1, 12, 0, 0);
@@ -201,8 +203,31 @@ TEST_CASE("Classe Service")
         CHECK(service.determinerFiabiliteCapteur("Sensor64", 1000, 10, debut2, fin2) == 0); 
 
         // No sensor found because of the radius is too small
-        CHECK(service.determinerFiabiliteCapteur("Sensor64", 0.1, 10, debut2, fin2) == 0); 
-
+        CHECK(service.determinerFiabiliteCapteur("Sensor64", 0.1, 10, debut, fin) == 0); 
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Ouf ! c'est la fin des tests unitaires !
+// :)

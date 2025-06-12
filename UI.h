@@ -25,7 +25,7 @@ using namespace std;
 //------------------------------------------------------------------------
 // Rôle de la classe <UI>
 //
-//
+//  Définit l'interface ligne de commande pour interagir avec l'application AirWatcher
 //------------------------------------------------------------------------
 
 class UI

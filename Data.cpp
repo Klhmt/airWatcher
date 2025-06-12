@@ -221,43 +221,6 @@ bool Data::loadProviderAndAirWatcher(const string& providerFilePath, const strin
 }
 
 
-void Data::printDataStructure()
-{   // Parcourt toutes les mesures pour affichage
-    for (const auto& sensorEntry : measurements)
-    {
-        const string& sensorID = sensorEntry.first;
-        const map<Date, vector<Measurement*>>& measurementsByDate = sensorEntry.second;
-
-        cout << "Sensor ID: " << sensorID << endl;
-
-        for (const auto& dateEntry : measurementsByDate)
-        {
-            const Date& date = dateEntry.first;
-            const vector<Measurement*>& measurements = dateEntry.second;
-
-            cout << "  Date: " << date << endl; // ou cout << date << si operator<< existe
-
-            for (const Measurement* m : measurements)
-            {
-                // À adapter selon ce que Measurement contient
-                cout << "    ";
-                cout << "Type: " << m->getAttribute() << ", ";
-                cout << "Value: " << m->getValue() << endl;
-            }
-        }
-
-        cout << "----------------------------------" << endl;
-    }
-}
-
-
-void Data::printSensorsMap()
-{   // Affiche chaque clé/valeur de sensorsMap
-    for (const auto& pair : sensorsMap) {
-        cout << "Key: " << pair.first << ", Value: " << (*(pair.second)).getSensorId() << endl;
-    }
-}
-
 bool Data::loadMeasurements(const string& measurementFilePath) {
     ifstream file(measurementFilePath);
     if (!file.is_open()) {

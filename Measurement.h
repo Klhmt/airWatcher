@@ -1,11 +1,3 @@
-/*************************************************************************
-                           Measurement  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
 //---------- Interface de la classe <Measurement> (fichier Measurement.h) ----------------
 #if ! defined ( Measurement_H )
 #define Measurement_H
@@ -29,7 +21,7 @@ using namespace std;
 //------------------------------------------------------------------------
 // Rôle de la classe <Measurement>
 //
-//
+//  Représenter un point de mesure pour un polluant, pour un capteur à un moment donné
 //------------------------------------------------------------------------
 
 class Measurement

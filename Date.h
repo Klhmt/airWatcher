@@ -1,11 +1,3 @@
-/*************************************************************************
-                           Date  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
 //---------- Interface de la classe <Sensor> (fichier Date.h) ----------------
 #if ! defined ( Date_H )
 #define Date_H
@@ -27,7 +19,7 @@ using namespace std;
 //------------------------------------------------------------------------
 // Rôle de la classe <Date>
 //
-//
+//  Est utilisée dans l'application pour représenter et manipuler des dates
 //------------------------------------------------------------------------
 
 class Date

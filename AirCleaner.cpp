@@ -1,11 +1,3 @@
-/*************************************************************************
-                           AirCleaner  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
 //---------- Réalisation de la classe <AirCleaner> (fichier AirCleaner.cpp) ------------
 
 //---------------------------------------------------------------- INCLUDE
@@ -20,11 +12,7 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
 //----------------------------------------------------- Méthodes publiques
-// type AirCleaner::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
+
 string AirCleaner::getAirCleanerId()
 {
     return cleanerId;
@@ -42,10 +30,8 @@ float AirCleaner::getLatitude()
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-// Non testé
+
 AirCleaner & AirCleaner::operator = ( const AirCleaner & unAirCleaner )
-// Algorithme :
-//
 {
     if (this != &unAirCleaner) {
         cleanerId = unAirCleaner.cleanerId;

@@ -1,11 +1,3 @@
-/*************************************************************************
-                           Sensor  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
 //---------- Interface de la classe <Sensor> (fichier Sensor.h) ----------------
 #if ! defined ( Sensor_H )
 #define Sensor_H

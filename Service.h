@@ -1,11 +1,3 @@
-/*************************************************************************
-                           Service  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
 //---------- Interface de la classe <Service> (fichier Service.h) ----------------
 #if ! defined ( SERVICE_H )
 #define SERVICE_H
@@ -28,7 +20,7 @@ using namespace std;
 //------------------------------------------------------------------------
 // Rôle de la classe <Service>
 //
-//
+//  Concentre tous les traitements "métiers" de l'application AirWatcher
 //------------------------------------------------------------------------
 
 class Service 

@@ -1,11 +1,3 @@
-/*************************************************************************
-                           AirCleaner  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
 //---------- Interface de la classe <AirCleaner> (fichier AirCleaner.h) ----------------
 #if ! defined ( AIRCLEANER_H )
 #define AIRCLEANER_H
@@ -21,7 +13,7 @@ using namespace std;
 //------------------------------------------------------------------------
 // Rôle de la classe <AirCleaner>
 //
-//
+//  Modélise un AirCleaner
 //------------------------------------------------------------------------
 
 class AirCleaner 

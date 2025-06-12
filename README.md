@@ -1,22 +1,49 @@
-# airWatcher
+# AirWatcher
 # Auteurs : Binômes B3233 & B3225
-AirWatcher Software Engineering Project 
 
-# Installation
+Projet de Génie Logiciel - S2
+
+## Installation
 ``` bash
 git clone https://github.com/Klhmt/airWatcher.git
 cd airWatcher
 ```
 
-# Compilation
+## Compilation
 ``` bash
 make
 ```
 
-# Lancement de l'application
+## Lancement de l'application
 ```bash
 ./AirWatcher
 ```
+
+## Exécuter les tests unitaires
+
+Nous avons utilisé le framework de test Doctest (https://github.com/doctest/doctest?tab=readme-ov-file), dont le header est déjà inclus dans le code source du projet. Pour compiler l'exécutable de test :
+```bash
+make test
+```
+
+Pour lancer les tests :
+```bash
+./test
+```
+
+## Utiliser des données différentes
+
+Pour utiliser vos propres données, il suffit de modifier le fichier "dataset/_fileGroupOrigine.csv", en mettant les chemins des fichiers contenant les :
+
+- providers
+- cleaners
+- users
+- sensors
+- measurements
+
+dans cet ordre, un par ligne.
+
+## Manuel utilisateur
 
 L'utilisateur est ensuite amené à choisir son type de profil ou bien quitter l'application
 1. Agence Gouvernementale

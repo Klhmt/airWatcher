@@ -1,0 +1,5 @@
+./dataset/providers.csv
+./dataset/cleaners.csv
+./dataset/users.csv
+./dataset/sensors.csv
+./dataset/measurements_test.csv

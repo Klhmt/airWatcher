@@ -199,6 +199,20 @@ bool operator>(const Date &d1, const Date &d2)
     return d2.seconde < d1.seconde;
 }
 
+Date& Date::operator=(const Date& other)
+// Algorithme : copie chaque champ sauf si objets égaux
+{
+    if (!(other == *this))  // ou: if (this != &other)
+    {
+        this->annee = other.getAnnee();
+        this->mois = other.getMois();
+        this->jour = other.getJour();
+        this->heure = other.getHeure();
+        this->minute = other.getMinute();
+        this->seconde = other.getSeconde();
+    }
+    return *this;
+} //----- Fin de operator=
 
 bool Date::lireDate(int &jour, int &mois, int &annee)
 // Algorithme :

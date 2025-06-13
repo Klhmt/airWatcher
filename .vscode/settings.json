@@ -69,7 +69,13 @@
     "thread": "cpp",
     "cinttypes": "cpp",
     "typeinfo": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "list": "cpp",
+    "xhash": "cpp",
+    "xlocale": "cpp",
+    "xlocinfo": "cpp",
+    "xmemory": "cpp",
+    "xutility": "cpp"
 }
 
 }

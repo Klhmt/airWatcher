@@ -1,5 +1,5 @@
 # Ignorer tous les fichiers objets
-*.o
+build/*
 
 # Ignorer l'exécutable et l'exécutable test
 AirWatcher

@@ -93,16 +93,18 @@ bool Service::verifierExistenceCapteur(string sensorId)
     return data.getSensorsMap().find(sensorId) != data.getSensorsMap().end();
 }
 
-
+// NON IMPLEMENTE
 vector<Measurement> Service::observerImpactAir()
 {
-    
+    // Return vide pour éviter les warning
+    return vector<Measurement>();
 }
 
-
+// NON IMPLEMENTE
 unordered_map<Sensor*,float> Service::indentifierCapteursSimilaires(string sensorId)
 {
-
+    // Return vide pour éviter les warning
+    return {};
 }
 
 
@@ -115,20 +117,15 @@ void Service::bannirCapteur(string sensorId)
     }
 }
 
-
+// NON IMPLEMENTE
 int Service::consulterRecompense(string userName)
 {
-
+    // Return vide pour éviter les warning
+    return -1;
 }
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-Service & Service::operator = ( const Service & unAirCleaner )
-// Algorithme :
-//
-{
-} //----- Fin de operator =
-
 
 //-------------------------------------------- Constructeurs - destructeur
 
@@ -199,10 +196,11 @@ int Service::convertirEnIndiceATMO(const string& pollutant, float value)
 
     const vector<Seuil>& seuilsPolluant = seuils[pollutant];
 
-    for (int i = 0; i < seuilsPolluant.size(); ++i)
+    // Type = size_t pour éviter le warning de comparaison avec des types signés différents
+    for (size_t i = 0; i < seuilsPolluant.size(); ++i)
     {
         if (value >= seuilsPolluant[i].min && value <= seuilsPolluant[i].max)
-            return i + 1; // L’indice ATMO commence à 1
+            return static_cast<int>(i + 1); // L’indice ATMO commence à 1
     }
 
     return -1; // Valeur hors bornes, ou pas de polluant correspondant

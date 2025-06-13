@@ -15,13 +15,6 @@ using namespace std;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-Provider & Provider::operator = ( const Provider & unProvider )
-// Algorithme :
-//
-{
-} //----- Fin de operator =
-
-
 //-------------------------------------------- Constructeurs - destructeur
 Provider::Provider( const string name)
 {
